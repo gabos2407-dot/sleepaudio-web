@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#15132E">
+  <title>Permisos de la app · Sleep Audio</title>
+  <meta name="description" content="Qué permisos pide Sleep Audio y para qué usa cada uno. Transparencia total.">
+  <link rel="icon" type="image/png" href="./assets/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..600,100&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="nav" aria-label="Principal">
+    <div class="wrap">
+      <a href="./index.html" class="nav-marca">
+        <img src="./assets/DreamCode.jpg" alt="DreamCode Studio">
+        <span>DreamCode Studio</span>
+      </a>
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M3 6h18M3 12h18M3 18h18"/>
+        </svg>
+      </button>
+      <ul class="nav-links">
+        <li><a href="./index.html">Inicio</a></li>
+        <li><a href="./sobre-nosotros.html">Sobre nosotros</a></li>
+        <li><a href="./apps.html">Apps</a></li>
+        <li><a href="./sleepaudio.html">Sleep Audio</a></li>
+        <li><a href="./contacto.html">Contacto</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO CORTO -->
+  <header class="hero corto">
+    <div class="wrap">
+      <h1>Permisos de la app</h1>
+      <p class="sub">Qué permisos pide Sleep Audio y para qué usa cada uno.</p>
+    </div>
+  </header>
+
+  <!-- LISTA DE PERMISOS -->
+  <section class="revelar">
+    <div class="wrap">
+
+      <div class="permiso">
+        <div>
+          <h3>Micrófono</h3>
+          <code>RECORD_AUDIO</code>
+        </div>
+        <div>
+          <p>Mide el nivel de ruido del entorno durante la Detección Inteligente de Sueño, para detectar silencio y ajustar la reproducción.</p>
+          <ul>
+            <li>No grabamos audio.</li>
+            <li>No almacenamos audio.</li>
+            <li>No enviamos audio fuera del dispositivo.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="permiso">
+        <div>
+          <h3>Sensores de movimiento</h3>
+          <code>Sensores del dispositivo</code>
+        </div>
+        <div>
+          <p>Junto al nivel de ruido, ayudan a detectar cuándo te has dormido. Los datos se usan en el momento y no se guardan.</p>
+        </div>
+      </div>
+
+      <div class="permiso">
+        <div>
+          <h3>Health Connect</h3>
+          <code>READ_HEART_RATE · READ_HEART_RATE_VARIABILITY · READ_SLEEP</code>
+        </div>
+        <div>
+          <p>Solo si conectas un reloj compatible y das permiso explícito. Sirven para el Informe de Sueño, el resumen de pulsaciones nocturnas y ajustar la reproducción a tu descanso.</p>
+          <ul>
+            <li>No almacenamos tus datos de salud fuera del móvil.</li>
+            <li>No los enviamos a ningún servidor.</li>
+            <li>Sin este permiso, la app funciona igual, sin el Informe de Sueño.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="permiso">
+        <div>
+          <h3>Notificaciones</h3>
+          <code>POST_NOTIFICATIONS</code>
+        </div>
+        <div>
+          <p>Muestran los controles de reproducción (pausar, continuar, detener) y el aviso del despertador.</p>
+          <ul>
+            <li>Sin publicidad ni notificaciones promocionales.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="permiso">
+        <div>
+          <h3>Reproducción en segundo plano</h3>
+          <code>FOREGROUND_SERVICE · FOREGROUND_SERVICE_MEDIA_PLAYBACK</code>
+        </div>
+        <div>
+          <p>Permiten que el audio, la mezcla, el temporizador y la detección de sueño sigan funcionando aunque cierres la app o apagues la pantalla.</p>
+        </div>
+      </div>
+
+      <div class="permiso">
+        <div>
+          <h3>Alarmas exactas</h3>
+          <code>SCHEDULE_EXACT_ALARM</code>
+        </div>
+        <div>
+          <p>Hacen que el despertador suene exactamente a la hora programada.</p>
+        </div>
+      </div>
+
+      <div class="permiso">
+        <div>
+          <h3>Inicio tras reinicio</h3>
+          <code>RECEIVE_BOOT_COMPLETED</code>
+        </div>
+        <div>
+          <p>Mantiene tus alarmas programadas si reinicias el móvil.</p>
+        </div>
+      </div>
+
+      <div class="permiso">
+        <div>
+          <h3>Vibración</h3>
+          <code>VIBRATE</code>
+        </div>
+        <div>
+          <p>Hace vibrar el móvil cuando suena el despertador, si activas esa opción.</p>
+        </div>
+      </div>
+
+      <div class="permiso">
+        <div>
+          <h3>Internet</h3>
+          <code>INTERNET</code>
+        </div>
+        <div>
+          <p>Se usa para las funciones que requieren conexión: la gestión de la suscripción a través de Google Play y la reproducción en streaming de pistas alojadas en la nube.</p>
+        </div>
+      </div>
+
+      <div class="permiso">
+        <div>
+          <h3>Compras dentro de la app</h3>
+          <code>com.android.vending.BILLING</code>
+        </div>
+        <div>
+          <p>Permite contratar la suscripción Premium a través de Google Play.</p>
+        </div>
+      </div>
+
+      <p class="gris" style="border-top:1px solid var(--linea);padding-top:26px;margin-top:20px">
+        ¿Dudas sobre algún permiso? Escríbenos a
+        <a href="mailto:dreamcode.creative@gmail.com?subject=Contacto%20desde%20la%20web">dreamcode.creative@gmail.com</a>.
+      </p>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-marca">
+        <img src="./assets/DreamCode.jpg" alt="DreamCode Studio">
+        <span>DreamCode Studio</span>
+      </div>
+      <ul class="footer-links">
+        <li><a href="./index.html">Inicio</a></li>
+        <li><a href="./sobre-nosotros.html">Sobre nosotros</a></li>
+        <li><a href="./apps.html">Apps</a></li>
+        <li><a href="./sleepaudio.html">Sleep Audio</a></li>
+        <li><a href="./contacto.html">Contacto</a></li>
+        <li><a href="./privacidad.html">Privacidad</a></li>
+        <li><a href="./terminos.html">Términos</a></li>
+        <li><a href="./permisos.html">Permisos</a></li>
+      </ul>
+      <div class="footer-abajo">
+        <span>© <span data-anio>2026</span> DreamCode Studio · Gabriel Domínguez</span>
+        <span>Hecho con cariño desde Cataluña</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./script.js"></script>
+</body>
+</html>

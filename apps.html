@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#15132E">
+  <title>Apps · DreamCode Studio</title>
+  <meta name="description" content="Sleep Audio es nuestra primera app. Muy pronto habrá más. Descubre cómo elegimos cada proyecto que publicamos.">
+  <link rel="icon" type="image/png" href="./assets/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..600,100&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="nav" aria-label="Principal">
+    <div class="wrap">
+      <a href="./index.html" class="nav-marca">
+        <img src="./assets/DreamCode.jpg" alt="DreamCode Studio">
+        <span>DreamCode Studio</span>
+      </a>
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M3 6h18M3 12h18M3 18h18"/>
+        </svg>
+      </button>
+      <ul class="nav-links">
+        <li><a href="./index.html">Inicio</a></li>
+        <li><a href="./sobre-nosotros.html">Sobre nosotros</a></li>
+        <li><a href="./apps.html" class="activo">Apps</a></li>
+        <li><a href="./sleepaudio.html">Sleep Audio</a></li>
+        <li><a href="./contacto.html">Contacto</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO CORTO -->
+  <header class="hero corto">
+    <div class="wrap">
+      <h1>Nuestras apps</h1>
+      <p class="sub">Pocas, pero bien hechas. Esto es lo que tenemos por ahora.</p>
+    </div>
+  </header>
+
+  <!-- TARJETA SLEEP AUDIO -->
+  <section class="revelar">
+    <div class="wrap">
+      <div class="tarjeta">
+        <img class="logo-vivo" src="./assets/logo.png" alt="Icono de Sleep Audio" style="width:180px;margin:0;">
+        <div>
+          <p class="gris" style="font-size:14px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;">Disponible</p>
+          <h2>Sleep Audio</h2>
+          <p class="gris" style="margin-top:10px;max-width:56ch">
+            Sonidos relajantes, mezclas de audio, meditaciones guiadas y un despertador inteligente que suena con tu propio sonido.
+          </p>
+          <div class="acciones" style="margin-top:28px">
+            <a class="btn btn-1" href="PLAY_URL" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 2.8v18.4c0 .5.5.8 1 .6l10.7-9.2c.3-.3.3-.8 0-1.1L5 2.2c-.5-.2-1 .1-1 .6z"/></svg>
+              Descargar en Google Play
+            </a>
+            <a class="btn btn-2" href="./sleepaudio.html">Ver detalles</a>
+          </div>
+          <p class="nota" style="margin-top:16px">Prueba gratis 10 días · Android</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUÉ VIENE DESPUÉS -->
+  <section class="banda revelar">
+    <div class="wrap">
+      <h2>¿Qué viene después?</h2>
+      <p class="gris" style="margin-top:12px;max-width:56ch">
+        Estamos trabajando en nuevas ideas. Preferimos ir despacio y publicar solo apps que de verdad aporten algo.
+      </p>
+
+      <div class="fases">
+        <div class="fase">
+          <div class="hora">Ahora</div>
+          <h3>Sleep Audio</h3>
+          <ul>
+            <li>
+              <strong>Mejoras continuas</strong>
+              <span>Seguimos puliendo la app con cada versión.</span>
+            </li>
+            <li>
+              <strong>Nuevos sonidos</strong>
+              <span>Más contenido en streaming para usuarios Premium.</span>
+            </li>
+          </ul>
+        </div>
+        <div class="fase">
+          <div class="hora">En el horno</div>
+          <h3>Ideas en desarrollo</h3>
+          <ul>
+            <li>
+              <strong>Apps sencillas</strong>
+              <span>Del mismo estilo: útiles, cuidadas, sin ruido.</span>
+            </li>
+            <li>
+              <strong>Sin fechas</strong>
+              <span>Las publicaremos cuando estén listas de verdad.</span>
+            </li>
+          </ul>
+        </div>
+        <div class="fase">
+          <div class="hora">Siempre</div>
+          <h3>Misma filosofía</h3>
+          <ul>
+            <li>
+              <strong>Menos ruido</strong>
+              <span>Sin funciones decorativas ni promesas vacías.</span>
+            </li>
+            <li>
+              <strong>Más utilidad</strong>
+              <span>Que resuelvan un problema real del día a día.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="cierre revelar">
+    <div class="wrap">
+      <h2>¿Tienes una idea para una app?</h2>
+      <p class="gris" style="margin-top:12px">Nos encantará leerla.</p>
+      <div class="acciones">
+        <a class="btn btn-1" href="./contacto.html">
+          Cuéntanosla
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-marca">
+        <img src="./assets/DreamCode.jpg" alt="DreamCode Studio">
+        <span>DreamCode Studio</span>
+      </div>
+      <ul class="footer-links">
+        <li><a href="./index.html">Inicio</a></li>
+        <li><a href="./sobre-nosotros.html">Sobre nosotros</a></li>
+        <li><a href="./apps.html">Apps</a></li>
+        <li><a href="./sleepaudio.html">Sleep Audio</a></li>
+        <li><a href="./contacto.html">Contacto</a></li>
+        <li><a href="./privacidad.html">Privacidad</a></li>
+        <li><a href="./terminos.html">Términos</a></li>
+        <li><a href="./permisos.html">Permisos</a></li>
+      </ul>
+      <div class="footer-abajo">
+        <span>© <span data-anio>2026</span> DreamCode Studio · Gabriel Domínguez</span>
+        <span>Hecho con cariño desde Cataluña</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./script.js"></script>
+</body>
+</html>

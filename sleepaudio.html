@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#15132E">
+  <title>Sleep Audio · DreamCode Studio</title>
+  <meta name="description" content="Sleep Audio: Tu compañero de sonidos relajantes para dormir mejor.">
+  <link rel="icon" type="image/png" href="./assets/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..600,100&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="nav" aria-label="Principal">
+    <div class="wrap">
+      <a href="./index.html" class="nav-marca">
+        <img src="./assets/DreamCode.jpg" alt="DreamCode Studio">
+        <span>DreamCode Studio</span>
+      </a>
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M3 6h18M3 12h18M3 18h18"/>
+        </svg>
+      </button>
+      <ul class="nav-links">
+        <li><a href="./index.html">Inicio</a></li>
+        <li><a href="./sobre-nosotros.html">Sobre nosotros</a></li>
+        <li><a href="./apps.html">Apps</a></li>
+        <li><a href="./sleepaudio.html" class="activo">Sleep Audio</a></li>
+        <li><a href="./contacto.html">Contacto</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="wrap dos">
+      <div class="hero-texto">
+        <h1>Sleep Audio</h1>
+        <p class="sub">
+          Duerme mejor cada noche. Sonidos para dormirte, un temporizador que se apaga cuando tú te duermes y un despertador con tu propio sonido.
+        </p>
+        <div class="acciones">
+          <a class="btn btn-1" href="PLAY_URL" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 2.8v18.4c0 .5.5.8 1 .6l10.7-9.2c.3-.3.3-.8 0-1.1L5 2.2c-.5-.2-1 .1-1 .6z"/></svg>
+            Descargar en Google Play
+          </a>
+        </div>
+        <p class="nota" style="margin-top:14px">Prueba gratis 10 días · Android</p>
+      </div>
+
+      <div class="hero-figura">
+        <!-- MARCO DE LA APP -->
+        <div class="mockup-marco">
+          <img src="./assets/captura-1.jpg" alt="Sonidos para dormirte" class="activa">
+          <img src="./assets/captura-6.jpg" alt="Despertador con tu propio sonido">
+          <img src="./assets/captura-5.jpg" alt="Temporizador que se apaga cuando te duermes">
+        </div>
+        <!-- PUNTOS INDICADORES CENTRADOS -->
+        <div class="mockup-dots" aria-label="Indicadores de captura">
+          <span class="activa" role="button" aria-label="Ver captura 1"></span>
+          <span role="button" aria-label="Ver captura 2"></span>
+          <span role="button" aria-label="Ver captura 3"></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- DETALLES DE LA APP -->
+  <section class="banda revelar">
+    <div class="wrap">
+      <h2>Tres razones por las que nunca te deja tirado</h2>
+      <p class="gris" style="margin-top:12px;max-width:56ch">
+        Sleep Audio funciona donde otras fallan. Y cuando quieres más, también.
+      </p>
+
+      <div class="fases">
+        <div class="fase">
+          <div class="hora">Offline</div>
+          <h3>Siempre disponible</h3>
+          <ul>
+            <li>
+              <strong>25 pistas incluidas</strong>
+              <span>10 músicas ambientales, 10 sonidos de la naturaleza y 5 meditaciones.</span>
+            </li>
+          </ul>
+        </div>
+        <div class="fase">
+          <div class="hora">Tuyas</div>
+          <h3>Importa tus audios</h3>
+          <ul>
+            <li>
+              <strong>Añade tus pistas</strong>
+              <span>Impórtalas y mézclalas con las nuestras sin restricciones.</span>
+            </li>
+          </ul>
+        </div>
+        <div class="fase">
+          <div class="hora">Premium</div>
+          <h3>Streaming ilimitado</h3>
+          <ul>
+            <li>
+              <strong>Más sonidos cada día</strong>
+              <span>Nuevas pistas en streaming sin ocupar espacio.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-marca">
+        <img src="./assets/DreamCode.jpg" alt="DreamCode Studio">
+        <span>DreamCode Studio</span>
+      </div>
+      <div class="footer-abajo">
+        <span>© <span data-anio>2026</span> DreamCode Studio</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT JS -->
+  <script>
+    (function () {
+      "use strict";
+
+      /* 1. Navbar con blur al hacer scroll */
+      const nav = document.querySelector(".nav");
+      if (nav) {
+        const onScroll = () => {
+          if (window.scrollY > 10) nav.classList.add("scrolled");
+          else nav.classList.remove("scrolled");
+        };
+        window.addEventListener("scroll", onScroll, { passive: true });
+        onScroll();
+      }
+
+      /* 2. Menú móvil */
+      const toggle = document.querySelector(".nav-toggle");
+      const links = document.querySelector(".nav-links");
+      if (toggle && links) {
+        toggle.addEventListener("click", () => {
+          const abierto = links.classList.toggle("abierto");
+          toggle.setAttribute("aria-expanded", abierto ? "true" : "false");
+        });
+      }
+
+      /* 3. Fade-in al hacer scroll */
+      const elementos = document.querySelectorAll(".revelar");
+      if (elementos.length && "IntersectionObserver" in window) {
+        const obs = new IntersectionObserver(
+          (entradas) => {
+            entradas.forEach((e) => {
+              if (e.isIntersecting) {
+                e.target.classList.add("visible");
+                obs.unobserve(e.target);
+              }
+            });
+          },
+          { threshold: 0.12 }
+        );
+        elementos.forEach((el) => obs.observe(el));
+      } else {
+        elementos.forEach((el) => el.classList.add("visible"));
+      }
+
+      /* 4. Mockup del hero app: rotación e interacción manual por clics */
+      const mockupImgs = document.querySelectorAll(".mockup-marco img");
+      const mockupDots = document.querySelectorAll(".mockup-dots span");
+      if (mockupImgs.length > 0) {
+        let actual = 0;
+        let timer = null;
+        const total = mockupImgs.length;
+        const duracion = 2500;
+        const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        const activar = (i) => {
+          mockupImgs.forEach((img, k) => img.classList.toggle("activa", k === i));
+          mockupDots.forEach((dot, k) => dot.classList.toggle("activa", k === i));
+          actual = i;
+        };
+
+        const reiniciarTimer = () => {
+          if (timer) clearInterval(timer);
+          if (total > 1 && !prefersReduced) {
+            timer = setInterval(() => {
+              activar((actual + 1) % total);
+            }, duracion);
+          }
+        };
+
+        // Permitir cambiar de captura haciendo clic en los puntos
+        mockupDots.forEach((dot, idx) => {
+          dot.addEventListener("click", () => {
+            activar(idx);
+            reiniciarTimer();
+          });
+        });
+
+        activar(0);
+        reiniciarTimer();
+      }
+
+      /* 5. Año dinámico */
+      const anio = document.querySelector("[data-anio]");
+      if (anio) anio.textContent = new Date().getFullYear();
+    })();
+  </script>
+</body>
+</html>
