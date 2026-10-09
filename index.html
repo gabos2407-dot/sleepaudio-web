@@ -175,7 +175,37 @@
         </div>
         <p class="nota" style="margin-top:14px">Prueba gratis 10 días · Android</p>
       </div>
-      <img class="logo-vivo" src="./assets/logo.png" alt="Icono de Sleep Audio">
+      <!-- TARJETA REPRODUCTOR: suena con las mismas muestras que los chips del hero -->
+      <div class="reproductor-zona">
+        <div class="reproductor" data-reproductor>
+          <div class="reproductor-portada">
+            <img src="./assets/logo.png" alt="Icono de Sleep Audio">
+          </div>
+          <p class="reproductor-cuenta" data-cuenta>Muestra 1 de 3</p>
+          <p class="reproductor-titulo" aria-live="polite">
+            <span data-emoji aria-hidden="true">🌧️</span>
+            <span data-titulo>Lluvia</span>
+            <span class="ondas" aria-hidden="true"><i></i><i></i><i></i></span>
+          </p>
+          <div class="reproductor-barra" aria-hidden="true"><span></span></div>
+          <div class="reproductor-tiempos" aria-hidden="true">
+            <span data-actual>0:00</span>
+            <span data-total>–:––</span>
+          </div>
+          <div class="reproductor-controles">
+            <button type="button" class="rep-btn" data-anterior aria-label="Muestra anterior">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h2.4v14H6zM20 5.5v13L9.5 12z"/></svg>
+            </button>
+            <button type="button" class="rep-btn rep-play" data-play aria-pressed="false" aria-label="Escuchar muestra: Lluvia">
+              <svg class="ico-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.2v13.6L19 12z"/></svg>
+              <svg class="ico-pausa" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.6v14H7zM13.4 5H17v14h-3.6z"/></svg>
+            </button>
+            <button type="button" class="rep-btn" data-siguiente aria-label="Muestra siguiente">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.6 5H18v14h-2.4zM4 5.5v13L14.5 12z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 

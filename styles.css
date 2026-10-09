@@ -646,6 +646,148 @@ section.tras-hero { padding-top: 48px; }
 .audio-preview-estado { min-height: 22px; margin-top: 10px; font-size: 15px; color: #FFB4B4; }
 
 /* ============================================
+   Tarjeta reproductor (bloque "Sleep Audio" del inicio)
+   Cristal esmerilado sobre un resplandor de color.
+   Reproduce las mismas muestras que los chips del hero.
+   ============================================ */
+.reproductor-zona {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: 26px 0;
+  isolation: isolate;
+}
+/* Resplandores de fondo: son lo que el cristal desenfoca */
+.reproductor-zona::before,
+.reproductor-zona::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 230px;
+  height: 230px;
+  border-radius: 50%;
+  filter: blur(46px);
+  pointer-events: none;
+}
+.reproductor-zona::before { background: rgba(95, 212, 200, .55); top: 2%; left: calc(50% - 215px); }
+.reproductor-zona::after  { background: rgba(139, 92, 246, .60); bottom: 2%; right: calc(50% - 215px); }
+
+.reproductor {
+  position: relative;
+  width: min(340px, 100%);
+  padding: 20px 20px 24px;
+  border-radius: 30px;
+  background: linear-gradient(160deg, rgba(236, 232, 247, .13) 0%, rgba(201, 184, 255, .06) 55%, rgba(95, 212, 200, .07) 100%);
+  border: 1px solid rgba(236, 232, 247, .22);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  backdrop-filter: blur(22px) saturate(150%);
+  box-shadow: var(--sombra), inset 0 1px 0 rgba(255, 255, 255, .14);
+}
+
+.reproductor-portada {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1 / .74;
+  border-radius: 20px;
+  border: 1px solid var(--linea);
+  background: radial-gradient(circle at 50% 42%, rgba(95, 212, 200, .24) 0%, rgba(21, 19, 46, .62) 72%);
+  overflow: hidden;
+}
+.reproductor-portada img {
+  width: 54%;
+  height: auto;
+  animation: respira 8s ease-in-out infinite;
+}
+
+.reproductor-cuenta {
+  margin-top: 18px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--texto-2);
+}
+.reproductor-titulo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+  font-family: "Fraunces", Georgia, serif;
+  font-variation-settings: "SOFT" 100;
+  font-size: 27px;
+  line-height: 1.2;
+  color: var(--texto);
+}
+.reproductor-titulo .ondas { margin-left: auto; height: 18px; }
+.reproductor.sonando .reproductor-titulo .ondas { width: 13px; opacity: 1; }
+.reproductor.sonando .reproductor-titulo .ondas i { animation: ecualiza 1s ease-in-out infinite; }
+.reproductor.sonando .reproductor-titulo .ondas i:nth-child(2) { animation-delay: -.35s; }
+.reproductor.sonando .reproductor-titulo .ondas i:nth-child(3) { animation-delay: -.7s; }
+
+.reproductor-barra {
+  height: 4px;
+  margin-top: 16px;
+  border-radius: 4px;
+  background: rgba(201, 184, 255, .2);
+  overflow: hidden;
+}
+.reproductor-barra span {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  background: var(--marea);
+  transform-origin: 0 50%;
+  transform: scaleX(var(--progreso, 0));
+}
+.reproductor-tiempos {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-2);
+}
+
+.reproductor-controles {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  margin-top: 12px;
+}
+.rep-btn {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--linea-2);
+  background: rgba(201, 184, 255, .06);
+  color: var(--texto);
+  transition: transform .15s ease, border-color .2s ease, color .2s ease, background .2s ease;
+}
+.rep-btn:hover { border-color: var(--marea); color: var(--marea); }
+.rep-btn:active { transform: scale(.94); }
+.rep-btn:focus-visible { border-radius: 50%; }
+.rep-btn svg { grid-area: 1 / 1; width: 20px; height: 20px; fill: currentColor; }
+
+.rep-play {
+  width: 64px;
+  height: 64px;
+  border-color: transparent;
+  background: var(--marea);
+  color: var(--noche);
+  box-shadow: 0 12px 30px -8px rgba(95, 212, 200, .65);
+}
+.rep-play:hover { color: var(--noche); border-color: transparent; transform: scale(1.05); }
+.rep-play svg { width: 26px; height: 26px; }
+.rep-play .ico-pausa { display: none; }
+.reproductor.sonando .rep-play .ico-play { display: none; }
+.reproductor.sonando .rep-play .ico-pausa { display: block; }
+.reproductor.cargando .rep-play { animation: late .9s ease-in-out infinite; }
+.reproductor.error .reproductor-cuenta { color: #FFB4B4; }
+
+/* ============================================
    Botón de Google Play (logo integrado, sin imagen)
    ============================================ */
 .btn.btn-play { gap: 12px; padding: 12px 28px 12px 22px; }
@@ -784,6 +926,7 @@ section.tras-hero { padding-top: 48px; }
    ============================================ */
 @media (prefers-reduced-motion: reduce) {
   .preview-btn.sonando .ondas i, .preview-btn.cargando .play-icon { animation: none; }
+  .reproductor-portada img, .reproductor.sonando .reproductor-titulo .ondas i, .reproductor.cargando .rep-play { animation: none; }
   .preview-btn, .feature-card { transition: none; }
 }
 
@@ -803,6 +946,9 @@ section.tras-hero { padding-top: 48px; }
       url("./assets/fondo.jpg") 82% 42% / cover no-repeat;
   }
   .hero.corto + section { padding-top: 40px; }
+  .reproductor-zona { padding: 14px 0 8px; }
+  .reproductor-zona::before { left: 0; }
+  .reproductor-zona::after { right: 0; }
   .hero.inicio .hero-texto { max-width: 100%; }
   .hero.inicio .hero-texto h1 { font-size: clamp(40px, 10.5vw, 60px); }
   .hero.inicio .hero-texto .sub { font-size: 20px; }

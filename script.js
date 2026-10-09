@@ -177,7 +177,9 @@
     });
   }
 
-  /* ---------- 7. Muestras de audio del hero ---------- */
+  /* ---------- 7. Muestras de audio: chips del hero y tarjeta reproductor ---------- */
+  // Las pistas salen de los chips del hero (nombre, emoji y URL). La tarjeta
+  // reproductor usa esas mismas pistas, así que solo suena una cosa a la vez.
   const chips = Array.from(document.querySelectorAll(".preview-btn[data-src]"));
   if (chips.length) {
     const audio = new Audio();
@@ -186,6 +188,7 @@
     const FUNDIDO = 450;      // ms que tarda el volumen en entrar o salir
     const COLA = 1.5;         // s finales en los que la muestra se apaga sola
     let activo = null;        // chip que está sonando (o cargando)
+    let indice = 0;           // pista seleccionada en la tarjeta
     let temporizador = null;  // intervalo del fundido en curso
     let avisoError = null;
 
@@ -200,10 +203,17 @@
       const n = chip.querySelector(".sound-nombre");
       return (n ? n.textContent : chip.textContent).trim();
     };
+    const emojiDe = (chip) => {
+      const e = chip.querySelector(".sound-emoji");
+      return e ? e.textContent.trim() : "";
+    };
     const etiquetar = (chip, sonando) => {
       chip.setAttribute("aria-pressed", sonando ? "true" : "false");
       chip.setAttribute("aria-label", (sonando ? "Pausar muestra: " : "Escuchar muestra: ") + nombreDe(chip));
     };
+    const mmss = (s) => (isFinite(s) && s >= 0)
+      ? Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0")
+      : "–:––";
 
     // Cada chip recibe su mini ecualizador y su línea de progreso
     chips.forEach((chip) => {
@@ -217,6 +227,36 @@
       chip.append(ondas, progreso);
       etiquetar(chip, false);
     });
+
+    // Tarjeta reproductor (si la página la tiene)
+    const tarjeta = document.querySelector("[data-reproductor]");
+    const pieza = (sel) => (tarjeta ? tarjeta.querySelector(sel) : null);
+    const t = {
+      titulo: pieza("[data-titulo]"), emoji: pieza("[data-emoji]"), cuenta: pieza("[data-cuenta]"),
+      play: pieza("[data-play]"), anterior: pieza("[data-anterior]"), siguiente: pieza("[data-siguiente]"),
+      actual: pieza("[data-actual]"), total: pieza("[data-total]")
+    };
+    const hayTarjeta = !!(tarjeta && t.titulo && t.play);
+
+    function pintarTarjeta() {
+      if (!hayTarjeta) return;
+      const chip = chips[indice];
+      const esLaActiva = activo === chip;
+      t.titulo.textContent = nombreDe(chip);
+      if (t.emoji) t.emoji.textContent = emojiDe(chip);
+      if (t.cuenta && !tarjeta.classList.contains("error")) {
+        t.cuenta.textContent = "Muestra " + (indice + 1) + " de " + chips.length;
+      }
+      tarjeta.classList.toggle("sonando", esLaActiva && chip.classList.contains("sonando"));
+      tarjeta.classList.toggle("cargando", esLaActiva && chip.classList.contains("cargando"));
+      t.play.setAttribute("aria-pressed", esLaActiva ? "true" : "false");
+      t.play.setAttribute("aria-label", (esLaActiva ? "Pausar muestra: " : "Escuchar muestra: ") + nombreDe(chip));
+      if (!esLaActiva) {
+        tarjeta.style.setProperty("--progreso", "0");
+        if (t.actual) t.actual.textContent = "0:00";
+        if (t.total) t.total.textContent = "–:––";
+      }
+    }
 
     function fundir(hasta, alTerminar) {
       clearInterval(temporizador);
@@ -239,11 +279,19 @@
       etiquetar(chip, false);
     }
 
+    function quitarAviso() {
+      clearTimeout(avisoError);
+      estado.textContent = "";
+      chips.forEach((c) => c.classList.remove("error"));
+      if (hayTarjeta) tarjeta.classList.remove("error");
+    }
+
     function parar(suave) {
       const chip = activo;
       if (!chip) return;
       activo = null;
       restablecer(chip);
+      pintarTarjeta();
       if (suave && !audio.paused) {
         fundir(0, () => audio.pause());
       } else {
@@ -258,31 +306,33 @@
       restablecer(chip);
       chip.classList.add("error");
       estado.textContent = "No se pudo cargar «" + nombreDe(chip) + "». Revisa tu conexión e inténtalo de nuevo.";
+      pintarTarjeta();
+      if (hayTarjeta) {
+        tarjeta.classList.add("error");
+        if (t.cuenta) t.cuenta.textContent = "No se pudo cargar la muestra";
+      }
       clearTimeout(avisoError);
-      avisoError = setTimeout(() => {
-        chip.classList.remove("error");
-        estado.textContent = "";
-      }, 5000);
+      avisoError = setTimeout(() => { quitarAviso(); pintarTarjeta(); }, 5000);
     }
 
     function reproducir(chip) {
       parar(false);
       clearInterval(temporizador);
       temporizador = null;
-      clearTimeout(avisoError);
-      estado.textContent = "";
-      chips.forEach((c) => c.classList.remove("error"));
+      quitarAviso();
 
       activo = chip;
+      indice = chips.indexOf(chip);
       chip.classList.add("cargando");
       etiquetar(chip, true);
+      pintarTarjeta();
 
       audio.src = chip.dataset.src;   // siempre empieza desde el principio
       audio.volume = 0;
       const promesa = audio.play();
       if (promesa && typeof promesa.catch === "function") {
         promesa.catch((err) => {
-          // AbortError = se pulsó otro chip antes de que este empezara: no es un fallo
+          // AbortError = se eligió otra pista antes de que esta empezara: no es un fallo
           if (activo === chip && err && err.name !== "AbortError") fallo(chip);
         });
       }
@@ -295,16 +345,41 @@
       });
     });
 
+    if (hayTarjeta) {
+      t.play.addEventListener("click", () => {
+        const chip = chips[indice];
+        if (activo === chip) parar(true);
+        else reproducir(chip);
+      });
+      // Anterior / siguiente: si algo estaba sonando, sigue sonando la nueva pista
+      const mover = (paso) => {
+        const sonaba = activo !== null;
+        indice = (indice + paso + chips.length) % chips.length;
+        if (sonaba) reproducir(chips[indice]);
+        else { quitarAviso(); pintarTarjeta(); }
+      };
+      if (t.anterior) t.anterior.addEventListener("click", () => mover(-1));
+      if (t.siguiente) t.siguiente.addEventListener("click", () => mover(1));
+      pintarTarjeta();
+    }
+
     audio.addEventListener("playing", () => {
       if (!activo) return;
       activo.classList.remove("cargando");
       activo.classList.add("sonando");
+      pintarTarjeta();
       fundir(1);
     });
 
     audio.addEventListener("timeupdate", () => {
       if (!activo || !isFinite(audio.duration) || audio.duration <= 0) return;
-      activo.style.setProperty("--progreso", (audio.currentTime / audio.duration).toFixed(4));
+      const avance = (audio.currentTime / audio.duration).toFixed(4);
+      activo.style.setProperty("--progreso", avance);
+      if (hayTarjeta) {
+        tarjeta.style.setProperty("--progreso", avance);
+        if (t.actual) t.actual.textContent = mmss(audio.currentTime);
+        if (t.total) t.total.textContent = mmss(audio.duration);
+      }
       // Apagado suave en los últimos segundos (si no hay otro fundido en marcha)
       const restante = audio.duration - audio.currentTime;
       if (temporizador === null && restante < COLA) {
