@@ -172,17 +172,35 @@ section.cierre .acciones { justify-content: center; }
   50%      { transform: translateY(-10px); }
 }
 
-/* Hero corto */
+/* Hero corto (Apps, Sobre nosotros, Contacto, Privacidad, Términos, Permisos)
+   La altura sigue la proporción de fondo.jpg para que la imagen se vea entera.
+   La imagen empieza 72px por debajo del borde superior, así la luna queda
+   separada del menú, y el borde inferior se funde con la página. */
 .hero.corto {
-  min-height: clamp(420px, 48vw, 580px);
-  padding: 190px 0 110px;
+  min-height: clamp(412px, calc(26.4vw + 72px), 600px);
+  padding: 124px 0 52px;
   align-items: flex-end;
   background:
-    linear-gradient(180deg, rgba(21,19,46,.55) 0%, rgba(21,19,46,.9) 100%),
-    url("./assets/fondo.jpg") center 30% / cover no-repeat;
+    linear-gradient(180deg, rgba(21,19,46,.25) 0%, rgba(21,19,46,0) 36%, rgba(21,19,46,0) 78%, var(--noche) 100%),
+    linear-gradient(90deg, rgba(21,19,46,.70) 0%, rgba(21,19,46,.50) 42%, rgba(21,19,46,.08) 78%),
+    url("./assets/fondo.jpg") center bottom / auto calc(100% - 72px) no-repeat,
+    var(--noche);
 }
-.hero.corto .wrap > h1 { max-width: 22ch; }
-.hero.corto .sub { max-width: 40ch; }
+/* Pantallas muy anchas: la imagen no se estira; sus lados se funden con la página */
+@media (min-width: 2001px) {
+  .hero.corto {
+    background:
+      linear-gradient(90deg, var(--noche) calc(50% - 1000px), transparent calc(50% - 780px), transparent calc(50% + 780px), var(--noche) calc(50% + 1000px)),
+      linear-gradient(180deg, rgba(21,19,46,.25) 0%, rgba(21,19,46,0) 36%, rgba(21,19,46,0) 78%, var(--noche) 100%),
+      linear-gradient(90deg, rgba(21,19,46,.70) 0%, rgba(21,19,46,.50) 42%, rgba(21,19,46,.08) 78%),
+      url("./assets/fondo.jpg") center bottom / auto calc(100% - 72px) no-repeat,
+      var(--noche);
+  }
+}
+.hero.corto .wrap > h1 { max-width: 22ch; font-size: clamp(40px, 5vw, 72px); }
+.hero.corto .sub { max-width: 40ch; margin-top: 16px; }
+/* La primera sección sube: menos hueco bajo la cabecera corta */
+.hero.corto + section { padding-top: 40px; }
 
 /* Hero app con mockup */
 .hero.app {
@@ -777,6 +795,14 @@ section.tras-hero { padding-top: 48px; }
 @media (max-width: 900px) {
   .hero-texto .audio-preview-buttons { margin-right: 0; }
   .hero.inicio { flex-direction: column; align-items: stretch; padding: 124px 0 0; }
+  .hero.corto {
+    min-height: 0;
+    padding: 124px 0 48px;
+    background:
+      linear-gradient(180deg, rgba(21,19,46,.45) 0%, rgba(21,19,46,.35) 60%, var(--noche) 100%),
+      url("./assets/fondo.jpg") 82% 42% / cover no-repeat;
+  }
+  .hero.corto + section { padding-top: 40px; }
   .hero.inicio .hero-texto { max-width: 100%; }
   .hero.inicio .hero-texto h1 { font-size: clamp(40px, 10.5vw, 60px); }
   .hero.inicio .hero-texto .sub { font-size: 20px; }
