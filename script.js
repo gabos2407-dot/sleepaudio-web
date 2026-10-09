@@ -498,16 +498,33 @@
     document.addEventListener("keydown", (ev) => { if (ev.key === "Escape") cerrarVideo(); });
   }
 
-  /* ---------- 9. Botón "Compartir" ---------- */
-  // En móvil abre el menú de compartir del teléfono; en ordenador copia el enlace.
-  document.querySelectorAll("[data-compartir]").forEach((boton) => {
-    const texto = boton.querySelector("[data-compartir-texto]") || boton;
+  /* ---------- 9. Copiar al portapapeles (lo usan "Compartir" y "Copiar correo") ---------- */
+  const copiarAlPortapapeles = async (texto) => {
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(texto);
+        return true;
+      }
+    } catch (e) { /* se intenta el método de respaldo */ }
+    const campo = document.createElement("textarea");
+    campo.value = texto;
+    campo.setAttribute("readonly", "");
+    campo.style.position = "fixed";
+    campo.style.opacity = "0";
+    document.body.appendChild(campo);
+    campo.select();
+    let ok = false;
+    try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+    campo.remove();
+    return ok;
+  };
+
+  // Cambia el texto del botón unos segundos para confirmar la acción
+  const avisoEnBoton = (boton, selectorTexto) => {
+    const texto = boton.querySelector(selectorTexto) || boton;
     const original = texto.textContent;
     let reloj = null;
-
-    const enlace = () => window.location.href.split("#")[0];
-
-    const avisar = (mensaje) => {
+    return (mensaje) => {
       texto.textContent = mensaje;
       boton.classList.add("hecho");
       clearTimeout(reloj);
@@ -516,26 +533,13 @@
         boton.classList.remove("hecho");
       }, 2500);
     };
+  };
 
-    const copiar = async () => {
-      try {
-        if (navigator.clipboard && window.isSecureContext) {
-          await navigator.clipboard.writeText(enlace());
-          return true;
-        }
-      } catch (e) { /* se intenta el método de respaldo */ }
-      const campo = document.createElement("textarea");
-      campo.value = enlace();
-      campo.setAttribute("readonly", "");
-      campo.style.position = "fixed";
-      campo.style.opacity = "0";
-      document.body.appendChild(campo);
-      campo.select();
-      let ok = false;
-      try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
-      campo.remove();
-      return ok;
-    };
+  /* ---------- 10. Botón "Compartir" ---------- */
+  // En móvil abre el menú de compartir del teléfono; en ordenador copia el enlace.
+  document.querySelectorAll("[data-compartir]").forEach((boton) => {
+    const avisar = avisoEnBoton(boton, "[data-compartir-texto]");
+    const enlace = () => window.location.href.split("#")[0];
 
     boton.addEventListener("click", async () => {
       const tactil = window.matchMedia("(pointer: coarse)").matches;
@@ -552,11 +556,19 @@
           if (e && e.name === "AbortError") return;   // el usuario cerró el menú
         }
       }
-      avisar((await copiar()) ? "Enlace copiado" : "No se pudo copiar");
+      avisar((await copiarAlPortapapeles(enlace())) ? "Enlace copiado" : "No se pudo copiar");
     });
   });
 
-  /* ---------- 10. Año dinámico en el footer ---------- */
+  /* ---------- 11. Botón "Copiar correo" ---------- */
+  document.querySelectorAll("[data-copiar]").forEach((boton) => {
+    const avisar = avisoEnBoton(boton, "[data-copiar-texto]");
+    boton.addEventListener("click", async () => {
+      avisar((await copiarAlPortapapeles(boton.dataset.copiar)) ? "Correo copiado" : "No se pudo copiar");
+    });
+  });
+
+  /* ---------- 12. Año dinámico en el footer ---------- */
   const anio = document.querySelector("[data-anio]");
   if (anio) anio.textContent = new Date().getFullYear();
 })();

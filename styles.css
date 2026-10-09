@@ -931,8 +931,9 @@ section.tras-hero { padding-top: 48px; }
 .video-cerrar svg { width: 24px; height: 24px; }
 
 /* Botón Compartir */
-.btn-compartir svg { width: 20px; height: 20px; }
-.btn-compartir.hecho { border-color: var(--marea); color: var(--marea); }
+/* Botones Compartir y Copiar correo */
+.btn-compartir svg, .btn-copiar svg { width: 20px; height: 20px; }
+.btn-compartir.hecho, .btn-copiar.hecho { border-color: var(--marea); color: var(--marea); }
 
 /* ============================================
    Botón de Google Play (logo integrado, sin imagen)
