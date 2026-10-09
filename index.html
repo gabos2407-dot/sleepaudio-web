@@ -14,6 +14,23 @@
 </head>
 <body>
 
+  <!-- ICONOS (se definen una vez y se reutilizan con <use>) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <clipPath id="gp-recorte">
+        <path d="M4 4.3c0-2 1.4-2.8 3.1-1.8l13.1 7.7c1.7 1 1.7 2.6 0 3.6L7.1 21.5C5.4 22.5 4 21.7 4 19.7z"/>
+      </clipPath>
+    </defs>
+    <symbol id="ico-google-play" viewBox="0 0 24 24">
+      <g clip-path="url(#gp-recorte)">
+        <path fill="#4285F4" d="M-.6-2.7 13.2 12-.6 26.7z"/>
+        <path fill="#34A853" d="M-.6-2.7h24.9v7.1L13.2 12z"/>
+        <path fill="#FBBC04" d="M13.2 12l11.1-7.6v15.2z"/>
+        <path fill="#EA4335" d="M13.2 12l11.1 7.6v7.1H-.6z"/>
+      </g>
+    </symbol>
+  </svg>
+
   <!-- NAVBAR -->
   <nav class="nav" aria-label="Principal">
     <div class="wrap">
@@ -37,24 +54,104 @@
   </nav>
 
   <!-- HERO -->
-  <header class="hero">
-    <div class="wrap dos">
+  <header class="hero inicio">
+    <!-- Imagen de fondo: ocupa la derecha y se funde con la página -->
+    <div class="hero-fondo">
+      <img src="./assets/hero.jpg" alt="Sleep Audio en el móvil">
+    </div>
+    <div class="wrap">
       <div class="hero-texto">
-        <h1>Menos ruido,<br>más utilidad.</h1>
-        <p class="sub">DreamCode Studio crea apps móviles sencillas y cuidadas.</p>
-        <div class="acciones">
-          <a class="btn btn-1" href="./sleepaudio.html">
-            Conocer Sleep Audio
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-          </a>
-          <a class="btn btn-2" href="./apps.html">Ver nuestras apps</a>
+        <h1>Apaga el ruido<br>mental y duerme<br>en minutos.</h1>
+        <p class="sub">Sonidos ambientales de alta calidad, mezclas personalizadas y temporizador inteligente. Sin anuncios molestos.</p>
+
+        <!-- PREVIEW DE AUDIO -->
+        <div class="audio-preview">
+          <p class="audio-preview-label">Escucha una muestra antes de descargar:</p>
+          <div class="audio-preview-buttons">
+            <button type="button" class="preview-btn" data-src="https://pub-302795f288b64828bf5c0c69ad1fa470.r2.dev/lluvia_nocturnaPAGINAWEB.mp3" aria-pressed="false">
+              <span class="play-icon" aria-hidden="true">
+                <svg class="ico-play" viewBox="0 0 24 24"><path d="M8 5.2v13.6L19 12z"/></svg>
+                <svg class="ico-pausa" viewBox="0 0 24 24"><path d="M7 5h3.6v14H7zM13.4 5H17v14h-3.6z"/></svg>
+              </span>
+              <span class="sound-emoji" aria-hidden="true">🌧️</span>
+              <span class="sound-nombre">Lluvia</span>
+            </button>
+            <button type="button" class="preview-btn" data-src="https://pub-302795f288b64828bf5c0c69ad1fa470.r2.dev/pajarosPAGINAWEB.mp3" aria-pressed="false">
+              <span class="play-icon" aria-hidden="true">
+                <svg class="ico-play" viewBox="0 0 24 24"><path d="M8 5.2v13.6L19 12z"/></svg>
+                <svg class="ico-pausa" viewBox="0 0 24 24"><path d="M7 5h3.6v14H7zM13.4 5H17v14h-3.6z"/></svg>
+              </span>
+              <span class="sound-emoji" aria-hidden="true">🐦</span>
+              <span class="sound-nombre">Pájaros</span>
+            </button>
+            <button type="button" class="preview-btn" data-src="https://pub-302795f288b64828bf5c0c69ad1fa470.r2.dev/Olas_Del_MarPAGINAWEB.mp3" aria-pressed="false">
+              <span class="play-icon" aria-hidden="true">
+                <svg class="ico-play" viewBox="0 0 24 24"><path d="M8 5.2v13.6L19 12z"/></svg>
+                <svg class="ico-pausa" viewBox="0 0 24 24"><path d="M7 5h3.6v14H7zM13.4 5H17v14h-3.6z"/></svg>
+              </span>
+              <span class="sound-emoji" aria-hidden="true">🌊</span>
+              <span class="sound-nombre">Olas del mar</span>
+            </button>
+          </div>
         </div>
-      </div>
-      <div class="hero-figura">
-        <img src="./assets/hero.jpg" alt="Sleep Audio en el móvil">
+
+        <div class="acciones">
+          <a class="btn btn-1 btn-play" href="https://play.google.com/store/apps/details?id=com.dreamcodestudio.sleepaudio" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-google-play"/></svg>
+            <span class="btn-play-texto">
+              <small>Disponible en</small>
+              <strong>Google Play</strong>
+            </span>
+          </a>
+          <a class="btn btn-2" href="./sleepaudio.html">Conocer Sleep Audio</a>
+        </div>
+        <p class="nota" style="margin-top:14px">Prueba gratis 10 días · Android</p>
       </div>
     </div>
   </header>
+
+  <!-- CARACTERÍSTICAS -->
+  <section class="tras-hero revelar">
+    <div class="wrap">
+      <h2>Por qué engancha (y ayuda)</h2>
+      <p class="gris" style="margin-top:12px;max-width:56ch">
+        Lo que hace única a Sleep Audio, en seis detalles.
+      </p>
+
+      <div class="features">
+        <div class="feature-card">
+          <span class="feature-icon">🎧</span>
+          <h3 class="feature-title">Sonidos para descansar</h3>
+          <p class="feature-desc">Naturaleza, ruido blanco y una Colección de música relajante y meditaciones.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🎚️</span>
+          <h3 class="feature-title">Mezclas personalizadas</h3>
+          <p class="feature-desc">Ajusta el volumen de cada capa de audio por separado y crea tu ambiente.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">⏱️</span>
+          <h3 class="feature-title">Temporizador de apagado</h3>
+          <p class="feature-desc">Elige el tiempo y el volumen baja poco a poco hasta detenerse, sin sobresaltos.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">⏰</span>
+          <h3 class="feature-title">Despertador con tus sonidos</h3>
+          <p class="feature-desc">Elige un sonido como alarma, con volumen ascendente, vibración y repetición semanal, para despertar con suavidad.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">😴</span>
+          <h3 class="feature-title">Detección de reposo</h3>
+          <p class="feature-desc">Detecta cuándo parece que te dormiste y te avisa. Opcional, y tú decides si activarla.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🌙</span>
+          <h3 class="feature-title">Diseño oscuro y tranquilo</h3>
+          <p class="feature-desc">Una pantalla oscura pensada para no molestarte de noche.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- SLEEP AUDIO -->
   <section class="banda revelar">
@@ -67,9 +164,12 @@
           y deja que la app se adapte a tu descanso con la Detección Inteligente de Sueño.
         </p>
         <div class="acciones">
-          <a class="btn btn-1" href="https://play.google.com/store/apps/details?id=com.dreamcodestudio.sleepaudio" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 2.8v18.4c0 .5.5.8 1 .6l10.7-9.2c.3-.3.3-.8 0-1.1L5 2.2c-.5-.2-1 .1-1 .6z"/></svg>
-            Descargar en Google Play
+          <a class="btn btn-1 btn-play" href="https://play.google.com/store/apps/details?id=com.dreamcodestudio.sleepaudio" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-google-play"/></svg>
+            <span class="btn-play-texto">
+              <small>Disponible en</small>
+              <strong>Google Play</strong>
+            </span>
           </a>
           <a class="btn btn-2" href="./sleepaudio.html">Conocer la app</a>
         </div>
@@ -203,14 +303,74 @@
     </div>
   </section>
 
+  <!-- FAQ -->
+  <section class="revelar">
+    <div class="wrap">
+      <h2>Preguntas frecuentes</h2>
+      <p class="gris" style="margin-top:12px;max-width:56ch">
+        Lo que más nos preguntáis, respondido en dos líneas.
+      </p>
+
+      <div class="faq" style="margin-top:32px">
+        <details>
+          <summary>¿Funciona sin conexión a internet?</summary>
+          <p>Sí, en parte. Los sonidos de la Biblioteca (lluvia, pájaros, ruido blanco y más) están dentro de la app y funcionan sin internet. La Colección de música se reproduce por streaming y necesita conexión; las pistas que ya escuchaste pueden seguir sonando sin red durante un tiempo, pero no está garantizado.</p>
+        </details>
+
+        <details>
+          <summary>¿Puedo programar el apagado automático?</summary>
+          <p>Sí. El temporizador baja el volumen poco a poco y detiene la reproducción cuando termina el tiempo que elegiste, para que te duermas sin sobresaltos.</p>
+        </details>
+
+        <details>
+          <summary>¿Es totalmente gratuita?</summary>
+          <p>Puedes descargarla y usarla gratis. Incluye sonidos y pistas gratuitas, y una versión Premium opcional que desbloquea el resto de la Colección y más funciones.</p>
+        </details>
+
+        <details>
+          <summary>¿Qué sonidos incluye?</summary>
+          <p>Sonidos de naturaleza como lluvia y pájaros, ruido blanco para dormir, y una Colección de música relajante con arpas, flautas tibetanas y meditaciones. Puedes mezclar varios a la vez.</p>
+        </details>
+
+        <details>
+          <summary>¿Consume mucha batería?</summary>
+          <p>Poco: reproducir audio con la pantalla apagada gasta poco. La detección de reposo, que es opcional, usa micrófono y sensores y gasta algo más.</p>
+        </details>
+
+        <details>
+          <summary>¿Puedo usar un sonido como despertador?</summary>
+          <p>Sí. Elige un sonido como alarma, con volumen ascendente, vibración y repetición semanal, para despertar con suavidad.</p>
+        </details>
+
+        <details>
+          <summary>¿Qué es la detección de reposo?</summary>
+          <p>Es una función opcional que detecta cuándo parece que te dormiste y te avisa. No apaga la reproducción. Usa el micrófono y los sensores del móvil solo para esa medición.</p>
+        </details>
+
+        <details>
+          <summary>¿Puedo usar mis propios audios?</summary>
+          <p>Sí, puedes importar tus audios y mezclarlos con los demás sonidos.</p>
+        </details>
+
+        <details>
+          <summary>¿Qué pasa con mi privacidad?</summary>
+          <p>La detección de reposo es opcional y tú decides si activarla. Más detalles en la <a href="./privacidad.html">Política de privacidad</a>.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
   <!-- CIERRE -->
   <section class="cierre revelar">
     <div class="wrap">
       <h2>Esta noche, duerme mejor.</h2>
       <div class="acciones">
-        <a class="btn btn-1" href="https://play.google.com/store/apps/details?id=com.dreamcodestudio.sleepaudio" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 2.8v18.4c0 .5.5.8 1 .6l10.7-9.2c.3-.3.3-.8 0-1.1L5 2.2c-.5-.2-1 .1-1 .6z"/></svg>
-          Descargar en Google Play
+        <a class="btn btn-1 btn-play" href="https://play.google.com/store/apps/details?id=com.dreamcodestudio.sleepaudio" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-google-play"/></svg>
+            <span class="btn-play-texto">
+              <small>Disponible en</small>
+              <strong>Google Play</strong>
+            </span>
         </a>
       </div>
     </div>

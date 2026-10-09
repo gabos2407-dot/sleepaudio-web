@@ -473,6 +473,228 @@ section.cierre .acciones { justify-content: center; }
   font-size: 16px; color: var(--texto-2);
 }
 
+/* ============================================
+   Sección justo debajo del hero: sube para no
+   dejar un hueco vacío entre ambas
+   ============================================ */
+section.tras-hero { padding-top: 48px; }
+
+/* ============================================
+   Hero de la página de inicio
+   La imagen va de fondo a la derecha y se funde
+   con la página; la altura la marca el texto.
+   ============================================ */
+.hero.inicio { min-height: 0; padding: 128px 0 36px; }
+.hero.inicio .hero-texto { max-width: min(640px, 54vw); padding-right: 0; }
+.hero.inicio .hero-texto h1 { font-size: clamp(44px, 5.4vw, 80px); line-height: 1.04; }
+.hero.inicio .hero-texto .sub { margin-top: 20px; font-size: clamp(20px, 1.7vw, 24px); }
+.hero.inicio .hero-texto .acciones { margin-top: 32px; }
+.hero.inicio .audio-preview { margin-top: 28px; }
+.hero.inicio .audio-preview-buttons { margin-right: 0; }
+
+.hero-fondo {
+  position: absolute;
+  z-index: 1;
+  top: calc(50% + 36px);
+  right: 0;
+  width: 62%;
+  aspect-ratio: 4 / 3;
+  max-height: calc(100% - 72px);
+  transform: translateY(-50%);
+  pointer-events: none;
+  /* borde izquierdo fundido con el fondo oscuro */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 34%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 34%);
+}
+.hero-fondo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 100% 50%;
+  /* bordes superior e inferior fundidos */
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 9%, #000 88%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 9%, #000 88%, transparent 100%);
+}
+
+/* ============================================
+   Muestras de audio del hero
+   ============================================ */
+.audio-preview { margin-top: 34px; }
+.audio-preview-label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--texto-2);
+}
+.audio-preview-buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+/* Los chips aprovechan el margen derecho del texto para caber en una sola fila */
+.hero-texto .audio-preview-buttons { margin-right: -60px; }
+
+.preview-btn {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 18px 7px 7px;
+  border-radius: 999px;
+  background: rgba(201, 184, 255, .07);
+  border: 1px solid var(--linea-2);
+  color: var(--texto);
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  transition: transform .2s ease, background .2s ease, border-color .2s ease, box-shadow .3s ease;
+}
+.preview-btn:hover {
+  transform: translateY(-2px);
+  background: rgba(95, 212, 200, .1);
+  border-color: var(--marea);
+}
+.preview-btn:active { transform: translateY(0); }
+.preview-btn:focus-visible, .btn:focus-visible { border-radius: 999px; }
+
+.play-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--marea);
+  color: var(--noche);
+  transition: background .2s ease;
+}
+.play-icon svg { grid-area: 1 / 1; width: 16px; height: 16px; fill: currentColor; }
+.play-icon .ico-pausa { display: none; }
+.sound-emoji { font-size: 20px; line-height: 1; }
+
+/* Mini ecualizador: solo aparece mientras suena la muestra */
+.ondas {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  width: 0;
+  height: 14px;
+  margin-left: -10px;
+  overflow: hidden;
+  color: var(--marea);
+  opacity: 0;
+  transition: width .25s ease, margin-left .25s ease, opacity .2s ease;
+}
+.ondas i { flex: 0 0 3px; height: 100%; border-radius: 2px; background: currentColor; transform-origin: 50% 100%; transform: scaleY(.3); }
+
+/* Línea de progreso de la muestra */
+.progreso {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--marea);
+  transform-origin: 0 50%;
+  transform: scaleX(var(--progreso, 0));
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+
+/* Estado: cargando */
+.preview-btn.cargando .play-icon { animation: late .9s ease-in-out infinite; }
+@keyframes late { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }
+
+/* Estado: sonando */
+.preview-btn.sonando {
+  background: rgba(95, 212, 200, .14);
+  border-color: var(--marea);
+  box-shadow: 0 0 0 4px rgba(95, 212, 200, .1), 0 12px 30px -14px rgba(95, 212, 200, .6);
+}
+.preview-btn.sonando .ico-play { display: none; }
+.preview-btn.sonando .ico-pausa { display: block; }
+.preview-btn.sonando .progreso { opacity: 1; }
+.preview-btn.sonando .ondas { width: 13px; margin-left: 0; opacity: 1; }
+.preview-btn.sonando .ondas i { animation: ecualiza 1s ease-in-out infinite; }
+.preview-btn.sonando .ondas i:nth-child(2) { animation-delay: -.35s; }
+.preview-btn.sonando .ondas i:nth-child(3) { animation-delay: -.7s; }
+@keyframes ecualiza {
+  0%, 100% { transform: scaleY(.3); }
+  50%      { transform: scaleY(1); }
+}
+
+/* Estado: no se pudo cargar */
+.preview-btn.error { border-color: #FF9A9A; }
+.audio-preview-estado { min-height: 22px; margin-top: 10px; font-size: 15px; color: #FFB4B4; }
+
+/* ============================================
+   Botón de Google Play (logo integrado, sin imagen)
+   ============================================ */
+.btn.btn-play { gap: 12px; padding: 12px 28px 12px 22px; }
+.hero-texto .btn.btn-play { padding: 14px 30px 14px 24px; }
+.btn-play svg { width: 30px; height: 30px; }
+.btn-play-texto { display: flex; flex-direction: column; align-items: flex-start; text-align: left; line-height: 1.1; }
+.btn-play-texto small { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; opacity: .72; }
+.btn-play-texto strong { font-size: 20px; font-weight: 600; letter-spacing: -.01em; margin-top: 2px; }
+
+/* ============================================
+   Tarjetas de características
+   ============================================ */
+.features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 44px; }
+.feature-card {
+  border: 1px solid var(--linea);
+  border-radius: var(--radio);
+  padding: 30px 28px 32px;
+  background: rgba(30, 27, 63, .45);
+  transition: transform .2s ease, border-color .2s ease;
+}
+.feature-card:hover { transform: translateY(-3px); border-color: var(--linea-2); }
+.feature-icon {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  background: rgba(95, 212, 200, .1);
+  border: 1px solid rgba(95, 212, 200, .22);
+  font-size: 26px;
+  line-height: 1;
+}
+.feature-title { font-size: 24px; margin: 20px 0 8px; }
+.feature-desc { font-size: 17px; line-height: 1.55; color: var(--texto-2); }
+
+/* ============================================
+   Preguntas frecuentes
+   ============================================ */
+.faq { max-width: 880px; border-top: 1px solid var(--linea); }
+.faq details { border-bottom: 1px solid var(--linea); }
+.faq summary {
+  position: relative;
+  list-style: none;
+  cursor: pointer;
+  padding: 22px 48px 22px 0;
+  font-size: 20px;
+  font-weight: 600;
+  transition: color .2s ease;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary:hover { color: var(--marea); }
+.faq summary:focus-visible { outline: 2px solid var(--marea); outline-offset: 4px; border-radius: 4px; }
+.faq summary::after {
+  content: "+";
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--marea);
+  transition: transform .2s ease;
+}
+.faq details[open] summary::after { transform: translateY(-50%) rotate(45deg); }
+.faq details p { padding: 0 48px 24px 0; max-width: 68ch; color: var(--texto-2); }
+
 .revelar { opacity: 0; transform: translateY(20px); transition: opacity .7s ease, transform .7s ease; }
 .revelar.visible { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) {
@@ -537,4 +759,48 @@ section.cierre .acciones { justify-content: center; }
   .hero { padding: 150px 0 70px; min-height: auto; }
   .hero.corto { padding: 160px 0 90px; min-height: auto; }
   .fotos { justify-content: flex-start; }
+}
+
+/* ============================================
+   Ajustes responsive de los bloques nuevos
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .preview-btn.sonando .ondas i, .preview-btn.cargando .play-icon { animation: none; }
+  .preview-btn, .feature-card { transition: none; }
+}
+
+@media (max-width: 1024px) {
+  .features { grid-template-columns: repeat(2, 1fr); }
+  .hero-texto .audio-preview-buttons { margin-right: -30px; }
+}
+
+@media (max-width: 900px) {
+  .hero-texto .audio-preview-buttons { margin-right: 0; }
+  .hero.inicio { flex-direction: column; align-items: stretch; padding: 124px 0 0; }
+  .hero.inicio .hero-texto { max-width: 100%; }
+  .hero.inicio .hero-texto h1 { font-size: clamp(40px, 10.5vw, 60px); }
+  .hero.inicio .hero-texto .sub { font-size: 20px; }
+  .hero-fondo {
+    position: relative;
+    top: auto;
+    right: auto;
+    order: 2;
+    width: 100%;
+    max-width: 560px;
+    max-height: none;
+    aspect-ratio: 1 / 1;
+    margin: 24px auto 0;
+    transform: none;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 14%, #000 86%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, #000 14%, #000 86%, transparent 100%);
+  }
+  section.tras-hero { padding-top: 28px; }
+  .preview-btn { padding: 8px 20px 8px 8px; font-size: 18px; }
+  .play-icon { width: 38px; height: 38px; }
+  .faq summary { font-size: 19px; }
+}
+
+@media (max-width: 600px) {
+  .features { grid-template-columns: 1fr; gap: 16px; }
+  .feature-card { padding: 24px 22px 26px; }
 }

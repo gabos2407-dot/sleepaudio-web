@@ -16,9 +16,30 @@
     .mockup-marco { width: min(288px, 62vw); }
     @media (max-width: 1024px) { .mockup-marco { width: min(256px, 56vw); } }
     @media (max-width: 900px)  { .mockup-marco { width: min(240px, 62vw); } }
+
+    /* Esta página conserva el espacio inferior original del hero */
+    .hero { padding-bottom: 100px; }
+    @media (max-width: 900px) { .hero { padding-bottom: 70px; } }
   </style>
 </head>
 <body>
+
+  <!-- ICONOS (se definen una vez y se reutilizan con <use>) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <clipPath id="gp-recorte">
+        <path d="M4 4.3c0-2 1.4-2.8 3.1-1.8l13.1 7.7c1.7 1 1.7 2.6 0 3.6L7.1 21.5C5.4 22.5 4 21.7 4 19.7z"/>
+      </clipPath>
+    </defs>
+    <symbol id="ico-google-play" viewBox="0 0 24 24">
+      <g clip-path="url(#gp-recorte)">
+        <path fill="#4285F4" d="M-.6-2.7 13.2 12-.6 26.7z"/>
+        <path fill="#34A853" d="M-.6-2.7h24.9v7.1L13.2 12z"/>
+        <path fill="#FBBC04" d="M13.2 12l11.1-7.6v15.2z"/>
+        <path fill="#EA4335" d="M13.2 12l11.1 7.6v7.1H-.6z"/>
+      </g>
+    </symbol>
+  </svg>
 
   <!-- NAVBAR -->
   <nav class="nav" aria-label="Principal">
@@ -51,9 +72,12 @@
           Duerme mejor cada noche. Sonidos para dormirte, un temporizador que se apaga cuando tú te duermes y un despertador con tu propio sonido.
         </p>
         <div class="acciones">
-          <a class="btn btn-1" href="https://play.google.com/store/apps/details?id=com.dreamcodestudio.sleepaudio" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 2.8v18.4c0 .5.5.8 1 .6l10.7-9.2c.3-.3.3-.8 0-1.1L5 2.2c-.5-.2-1 .1-1 .6z"/></svg>
-            Descargar en Google Play
+          <a class="btn btn-1 btn-play" href="https://play.google.com/store/apps/details?id=com.dreamcodestudio.sleepaudio" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-google-play"/></svg>
+            <span class="btn-play-texto">
+              <small>Disponible en</small>
+              <strong>Google Play</strong>
+            </span>
           </a>
         </div>
         <p class="nota" style="margin-top:14px">Prueba gratis 10 días · Android</p>

@@ -177,7 +177,146 @@
     });
   }
 
-  /* ---------- 7. Año dinámico en el footer ---------- */
+  /* ---------- 7. Muestras de audio del hero ---------- */
+  const chips = Array.from(document.querySelectorAll(".preview-btn[data-src]"));
+  if (chips.length) {
+    const audio = new Audio();
+    audio.preload = "none";
+
+    const FUNDIDO = 450;      // ms que tarda el volumen en entrar o salir
+    const COLA = 1.5;         // s finales en los que la muestra se apaga sola
+    let activo = null;        // chip que está sonando (o cargando)
+    let temporizador = null;  // intervalo del fundido en curso
+    let avisoError = null;
+
+    // Mensaje de estado (solo se ve si una muestra no carga)
+    const estado = document.createElement("p");
+    estado.className = "audio-preview-estado";
+    estado.setAttribute("aria-live", "polite");
+    const contenedor = chips[0].closest(".audio-preview");
+    if (contenedor) contenedor.appendChild(estado);
+
+    const nombreDe = (chip) => {
+      const n = chip.querySelector(".sound-nombre");
+      return (n ? n.textContent : chip.textContent).trim();
+    };
+    const etiquetar = (chip, sonando) => {
+      chip.setAttribute("aria-pressed", sonando ? "true" : "false");
+      chip.setAttribute("aria-label", (sonando ? "Pausar muestra: " : "Escuchar muestra: ") + nombreDe(chip));
+    };
+
+    // Cada chip recibe su mini ecualizador y su línea de progreso
+    chips.forEach((chip) => {
+      const ondas = document.createElement("span");
+      ondas.className = "ondas";
+      ondas.setAttribute("aria-hidden", "true");
+      ondas.innerHTML = "<i></i><i></i><i></i>";
+      const progreso = document.createElement("span");
+      progreso.className = "progreso";
+      progreso.setAttribute("aria-hidden", "true");
+      chip.append(ondas, progreso);
+      etiquetar(chip, false);
+    });
+
+    function fundir(hasta, alTerminar) {
+      clearInterval(temporizador);
+      const desde = audio.volume;
+      const inicio = Date.now();
+      temporizador = setInterval(() => {
+        const k = Math.min(1, (Date.now() - inicio) / FUNDIDO);
+        audio.volume = Math.min(1, Math.max(0, desde + (hasta - desde) * k));
+        if (k >= 1) {
+          clearInterval(temporizador);
+          temporizador = null;
+          if (alTerminar) alTerminar();
+        }
+      }, 30);
+    }
+
+    function restablecer(chip) {
+      chip.classList.remove("sonando", "cargando");
+      chip.style.setProperty("--progreso", "0");
+      etiquetar(chip, false);
+    }
+
+    function parar(suave) {
+      const chip = activo;
+      if (!chip) return;
+      activo = null;
+      restablecer(chip);
+      if (suave && !audio.paused) {
+        fundir(0, () => audio.pause());
+      } else {
+        clearInterval(temporizador);
+        temporizador = null;
+        audio.pause();
+      }
+    }
+
+    function fallo(chip) {
+      if (activo === chip) activo = null;
+      restablecer(chip);
+      chip.classList.add("error");
+      estado.textContent = "No se pudo cargar «" + nombreDe(chip) + "». Revisa tu conexión e inténtalo de nuevo.";
+      clearTimeout(avisoError);
+      avisoError = setTimeout(() => {
+        chip.classList.remove("error");
+        estado.textContent = "";
+      }, 5000);
+    }
+
+    function reproducir(chip) {
+      parar(false);
+      clearInterval(temporizador);
+      temporizador = null;
+      clearTimeout(avisoError);
+      estado.textContent = "";
+      chips.forEach((c) => c.classList.remove("error"));
+
+      activo = chip;
+      chip.classList.add("cargando");
+      etiquetar(chip, true);
+
+      audio.src = chip.dataset.src;   // siempre empieza desde el principio
+      audio.volume = 0;
+      const promesa = audio.play();
+      if (promesa && typeof promesa.catch === "function") {
+        promesa.catch((err) => {
+          // AbortError = se pulsó otro chip antes de que este empezara: no es un fallo
+          if (activo === chip && err && err.name !== "AbortError") fallo(chip);
+        });
+      }
+    }
+
+    chips.forEach((chip) => {
+      chip.addEventListener("click", () => {
+        if (activo === chip) parar(true);
+        else reproducir(chip);
+      });
+    });
+
+    audio.addEventListener("playing", () => {
+      if (!activo) return;
+      activo.classList.remove("cargando");
+      activo.classList.add("sonando");
+      fundir(1);
+    });
+
+    audio.addEventListener("timeupdate", () => {
+      if (!activo || !isFinite(audio.duration) || audio.duration <= 0) return;
+      activo.style.setProperty("--progreso", (audio.currentTime / audio.duration).toFixed(4));
+      // Apagado suave en los últimos segundos (si no hay otro fundido en marcha)
+      const restante = audio.duration - audio.currentTime;
+      if (temporizador === null && restante < COLA) {
+        audio.volume = Math.max(0, Math.min(1, restante / COLA));
+      }
+    });
+
+    audio.addEventListener("ended", () => parar(false));
+    audio.addEventListener("error", () => { if (activo) fallo(activo); });
+  }
+
+  /* ---------- 8. Año dinámico en el footer ---------- */
   const anio = document.querySelector("[data-anio]");
   if (anio) anio.textContent = new Date().getFullYear();
 })();
