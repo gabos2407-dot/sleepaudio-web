@@ -60,7 +60,9 @@
           }
         });
       },
-      { threshold: 0.12, rootMargin: "0px 0px -60px 0px" }
+      // threshold 0: la sección aparece en cuanto asoma 80px en pantalla, mida lo que mida.
+      // (Con un porcentaje, las secciones muy largas no llegaban a mostrarse en el móvil.)
+      { threshold: 0, rootMargin: "0px 0px -80px 0px" }
     );
     elementos.forEach((el) => obs.observe(el));
   } else {
