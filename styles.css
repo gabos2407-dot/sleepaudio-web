@@ -2,6 +2,23 @@
    SLEEP AUDIO · DreamCode Studio
    ============================================ */
 
+/* Tipografías alojadas en la propia web (antes se cargaban de Google Fonts).
+   Mismos pesos y ajustes que se pedían a Google. */
+@font-face {
+  font-family: "Fraunces";
+  src: url("./assets/fraunces.woff2") format("woff2");
+  font-weight: 300 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Figtree";
+  src: url("./assets/figtree.woff2") format("woff2");
+  font-weight: 400 600;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --noche: #15132E;
   --noche-2: #1E1B3F;
@@ -786,6 +803,136 @@ section.tras-hero { padding-top: 48px; }
 .reproductor.sonando .rep-play .ico-pausa { display: block; }
 .reproductor.cargando .rep-play { animation: late .9s ease-in-out infinite; }
 .reproductor.error .reproductor-cuenta { color: #FFB4B4; }
+
+/* ============================================
+   Vídeo (se carga al pulsar) y botón Compartir
+   ============================================ */
+
+/* Fila bajo los botones del hero: enlace "Ver vídeo" + nota */
+.hero-pie { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; margin-top: 16px; }
+.hero-pie .nota { margin: 0; }
+.enlace-video {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--texto);
+  transition: color .2s ease;
+}
+.enlace-video:hover { color: var(--marea); }
+.enlace-video:focus-visible { border-radius: 999px; }
+.enlace-video-ico {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--linea-2);
+  transition: border-color .2s ease, background .2s ease;
+}
+.enlace-video-ico svg { width: 14px; height: 14px; fill: currentColor; margin-left: 2px; }
+.enlace-video:hover .enlace-video-ico { border-color: var(--marea); background: rgba(95, 212, 200, .12); }
+
+/* Botón de Play sobre el marco de móvil (página Sleep Audio) */
+.mockup-play {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: var(--marea);
+  color: var(--noche);
+  box-shadow: 0 0 0 10px rgba(95, 212, 200, .2), 0 14px 34px -8px rgba(0, 0, 0, .65);
+  transition: transform .15s ease, box-shadow .2s ease;
+}
+.mockup-play:hover { transform: translate(-50%, -50%) scale(1.06); box-shadow: 0 0 0 14px rgba(95, 212, 200, .22), 0 14px 34px -8px rgba(0, 0, 0, .65); }
+.mockup-play:focus-visible { border-radius: 50%; }
+.mockup-play svg { width: 28px; height: 28px; fill: currentColor; margin-left: 3px; }
+
+.mockup-marco iframe,
+.video-marco iframe {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #000;
+}
+.mockup-marco.con-video { animation-play-state: paused; }
+.mockup-marco.con-video::before,
+.mockup-marco.con-video .mockup-play { display: none; }
+.hero-figura.viendo-video .mockup-dots { display: none; }
+
+.mockup-cerrar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: 1px solid var(--linea-2);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--texto);
+  transition: border-color .2s ease, color .2s ease;
+}
+.mockup-cerrar[hidden] { display: none; }
+.mockup-cerrar:hover { border-color: var(--marea); color: var(--marea); }
+.mockup-cerrar:focus-visible { border-radius: 999px; }
+.mockup-cerrar svg { width: 16px; height: 16px; }
+
+/* Ventana del vídeo sobre la página (inicio) */
+.video-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 210;
+  display: none;
+  place-items: center;
+  padding: 24px 16px;
+  background: rgba(10, 9, 24, .92);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+.video-modal.abierto { display: grid; animation: aparecer .25s ease; }
+.video-marco {
+  position: relative;
+  height: min(84vh, 780px);
+  aspect-ratio: 9 / 16;
+  max-width: 100%;
+  border-radius: 38px;
+  border: 10px solid #2A2745;
+  background: #000;
+  overflow: hidden;
+  box-shadow: var(--sombra), 0 0 0 2px rgba(201, 184, 255, .08), 0 40px 100px -30px rgba(95, 212, 200, .35);
+}
+.video-cerrar {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(30, 27, 63, .8);
+  border: 1px solid var(--linea-2);
+  color: var(--texto);
+  transition: background .2s ease, border-color .2s ease, color .2s ease;
+}
+.video-cerrar:hover { background: var(--marea); border-color: var(--marea); color: var(--noche); }
+.video-cerrar:focus-visible { border-radius: 50%; }
+.video-cerrar svg { width: 24px; height: 24px; }
+
+/* Botón Compartir */
+.btn-compartir svg { width: 20px; height: 20px; }
+.btn-compartir.hecho { border-color: var(--marea); color: var(--marea); }
 
 /* ============================================
    Botón de Google Play (logo integrado, sin imagen)

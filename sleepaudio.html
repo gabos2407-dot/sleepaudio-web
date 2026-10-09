@@ -7,9 +7,9 @@
   <title>Sleep Audio · DreamCode Studio</title>
   <meta name="description" content="Sleep Audio: Tu compañero de sonidos relajantes para dormir mejor.">
   <link rel="icon" type="image/png" href="./assets/logo.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..600,100&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Tipografías alojadas en la propia web (carpeta assets) -->
+  <link rel="preload" href="./assets/fraunces.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./assets/figtree.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="./styles.css">
   <style>
     /* Mockup del héroe de Sleep Audio: 20% más pequeño que el original */
@@ -79,6 +79,10 @@
               <strong>Google Play</strong>
             </span>
           </a>
+          <button type="button" class="btn btn-2 btn-compartir" data-compartir>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4"/></svg>
+            <span data-compartir-texto aria-live="polite">Compartir</span>
+          </button>
         </div>
         <p class="nota" style="margin-top:14px">Prueba gratis 10 días · Android</p>
       </div>
@@ -89,6 +93,10 @@
           <img src="./assets/captura-1.jpg" alt="Sonidos para dormirte" class="activa">
           <img src="./assets/captura-6.jpg" alt="Despertador con tu propio sonido">
           <img src="./assets/captura-5.jpg" alt="Temporizador de apagado">
+          <!-- Al pulsar, el vídeo de YouTube se carga dentro del marco -->
+          <button type="button" class="mockup-play" data-video-inline="cnVXTO6OVXI" aria-label="Ver el vídeo de Sleep Audio">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.2v13.6L19 12z"/></svg>
+          </button>
         </div>
         <!-- PUNTOS INDICADORES CENTRADOS -->
         <div class="mockup-dots" aria-label="Indicadores de captura">
@@ -96,6 +104,10 @@
           <span role="button" aria-label="Ver captura 2"></span>
           <span role="button" aria-label="Ver captura 3"></span>
         </div>
+        <button type="button" class="mockup-cerrar" data-video-cerrar hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          Cerrar vídeo
+        </button>
       </div>
     </div>
   </header>
@@ -160,92 +172,6 @@
     </div>
   </footer>
 
-  <!-- SCRIPT JS -->
-  <script>
-    (function () {
-      "use strict";
-
-      /* 1. Navbar con blur al hacer scroll */
-      const nav = document.querySelector(".nav");
-      if (nav) {
-        const onScroll = () => {
-          if (window.scrollY > 10) nav.classList.add("scrolled");
-          else nav.classList.remove("scrolled");
-        };
-        window.addEventListener("scroll", onScroll, { passive: true });
-        onScroll();
-      }
-
-      /* 2. Menú móvil */
-      const toggle = document.querySelector(".nav-toggle");
-      const links = document.querySelector(".nav-links");
-      if (toggle && links) {
-        toggle.addEventListener("click", () => {
-          const abierto = links.classList.toggle("abierto");
-          toggle.setAttribute("aria-expanded", abierto ? "true" : "false");
-        });
-      }
-
-      /* 3. Fade-in al hacer scroll */
-      const elementos = document.querySelectorAll(".revelar");
-      if (elementos.length && "IntersectionObserver" in window) {
-        const obs = new IntersectionObserver(
-          (entradas) => {
-            entradas.forEach((e) => {
-              if (e.isIntersecting) {
-                e.target.classList.add("visible");
-                obs.unobserve(e.target);
-              }
-            });
-          },
-          { threshold: 0.12 }
-        );
-        elementos.forEach((el) => obs.observe(el));
-      } else {
-        elementos.forEach((el) => el.classList.add("visible"));
-      }
-
-      /* 4. Mockup del hero app: rotación e interacción manual por clics */
-      const mockupImgs = document.querySelectorAll(".mockup-marco img");
-      const mockupDots = document.querySelectorAll(".mockup-dots span");
-      if (mockupImgs.length > 0) {
-        let actual = 0;
-        let timer = null;
-        const total = mockupImgs.length;
-        const duracion = 2500;
-        const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-        const activar = (i) => {
-          mockupImgs.forEach((img, k) => img.classList.toggle("activa", k === i));
-          mockupDots.forEach((dot, k) => dot.classList.toggle("activa", k === i));
-          actual = i;
-        };
-
-        const reiniciarTimer = () => {
-          if (timer) clearInterval(timer);
-          if (total > 1 && !prefersReduced) {
-            timer = setInterval(() => {
-              activar((actual + 1) % total);
-            }, duracion);
-          }
-        };
-
-        // Permitir cambiar de captura haciendo clic en los puntos
-        mockupDots.forEach((dot, idx) => {
-          dot.addEventListener("click", () => {
-            activar(idx);
-            reiniciarTimer();
-          });
-        });
-
-        activar(0);
-        reiniciarTimer();
-      }
-
-      /* 5. Año dinámico */
-      const anio = document.querySelector("[data-anio]");
-      if (anio) anio.textContent = new Date().getFullYear();
-    })();
-  </script>
+  <script src="./script.js"></script>
 </body>
 </html>

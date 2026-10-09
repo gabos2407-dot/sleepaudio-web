@@ -7,9 +7,9 @@
   <title>DreamCode Studio · Apps móviles con diseño cuidado</title>
   <meta name="description" content="DreamCode Studio crea apps móviles sencillas y cuidadas. Descubre Sleep Audio: sonidos relajantes para dormir mejor, con modo offline y streaming.">
   <link rel="icon" type="image/png" href="./assets/logo.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..600,100&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Tipografías alojadas en la propia web (carpeta assets) -->
+  <link rel="preload" href="./assets/fraunces.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./assets/figtree.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
@@ -105,7 +105,13 @@
           </a>
           <a class="btn btn-2" href="./sleepaudio.html">Conocer Sleep Audio</a>
         </div>
-        <p class="nota" style="margin-top:14px">Prueba gratis 10 días · Android</p>
+        <div class="hero-pie">
+          <button type="button" class="enlace-video" data-video-modal="cnVXTO6OVXI">
+            <span class="enlace-video-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.2v13.6L19 12z"/></svg></span>
+            Ver vídeo
+          </button>
+          <p class="nota">Prueba gratis 10 días · Android</p>
+        </div>
       </div>
     </div>
   </header>
@@ -302,9 +308,9 @@
           <div class="marco"><img src="./assets/captura-6.jpg" alt="Despertador" loading="lazy"></div>
           <p>Despertador</p>
         </figure>
-        <figure class="movil" data-lightbox data-src="./assets/captura-7.jpg" data-titulo="Informe de sueño">
-          <div class="marco"><img src="./assets/captura-7.jpg" alt="Informe de sueño" loading="lazy"></div>
-          <p>Informe de sueño</p>
+        <figure class="movil" data-lightbox data-src="./assets/captura-7.jpg" data-titulo="Modo reposo">
+          <div class="marco"><img src="./assets/captura-7.jpg" alt="Modo reposo" loading="lazy"></div>
+          <p>Modo reposo</p>
         </figure>
         <figure class="movil" data-lightbox data-src="./assets/captura-8.jpg" data-titulo="Colección exclusiva">
           <div class="marco"><img src="./assets/captura-8.jpg" alt="Colección exclusiva" loading="lazy"></div>
@@ -402,6 +408,10 @@
               <strong>Google Play</strong>
             </span>
         </a>
+        <button type="button" class="btn btn-2 btn-compartir" data-compartir>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4"/></svg>
+          <span data-compartir-texto aria-live="polite">Compartir</span>
+        </button>
       </div>
     </div>
   </section>

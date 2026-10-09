@@ -68,12 +68,14 @@
   }
 
   /* ---------- 5. Mockup del hero app: rotación de capturas ---------- */
+  const mockupMarco = document.querySelector(".mockup-marco");
   const mockupImgs = document.querySelectorAll(".mockup-marco img");
   const mockupDots = document.querySelectorAll(".mockup-dots span");
-  if (mockupImgs.length > 1) {
+  if (mockupMarco && mockupImgs.length > 0) {
     let actual = 0;
+    let timer = null;
     const total = mockupImgs.length;
-    const duracion = 2000; // ms por captura (2 segundos)
+    const duracion = 2500; // ms por captura
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const activar = (i) => {
@@ -82,13 +84,27 @@
       actual = i;
     };
 
-    activar(0);
+    const reiniciarTimer = () => {
+      if (timer) clearInterval(timer);
+      if (total > 1 && !prefersReduced) {
+        timer = setInterval(() => {
+          // mientras se ve el vídeo dentro del marco, las capturas no rotan
+          if (mockupMarco.classList.contains("con-video")) return;
+          activar((actual + 1) % total);
+        }, duracion);
+      }
+    };
 
-    if (!prefersReduced) {
-      setInterval(() => {
-        activar((actual + 1) % total);
-      }, duracion);
-    }
+    // Cambiar de captura haciendo clic en los puntos
+    mockupDots.forEach((dot, idx) => {
+      dot.addEventListener("click", () => {
+        activar(idx);
+        reiniciarTimer();
+      });
+    });
+
+    activar(0);
+    reiniciarTimer();
   }
 
   /* ---------- 6. Lightbox para capturas ---------- */
@@ -176,6 +192,9 @@
       else if (ev.key === "ArrowLeft") anterior();
     });
   }
+
+  // Los vídeos llaman a esta función para detener las muestras de audio antes de empezar
+  let pararMuestras = () => {};
 
   /* ---------- 7. Muestras de audio: chips del hero y tarjeta reproductor ---------- */
   // Las pistas salen de los chips del hero (nombre, emoji y URL). La tarjeta
@@ -389,9 +408,155 @@
 
     audio.addEventListener("ended", () => parar(false));
     audio.addEventListener("error", () => { if (activo) fallo(activo); });
+
+    pararMuestras = () => parar(false);
   }
 
-  /* ---------- 8. Año dinámico en el footer ---------- */
+  /* ---------- 8. Vídeo de YouTube (no se carga nada hasta que se pulsa) ---------- */
+  // Usa el dominio de privacidad de YouTube. El vídeo necesita que la página
+  // se abra por http/https (Live Server o publicada), no con doble clic.
+  const crearIframeVideo = (id, titulo) => {
+    const marcoVideo = document.createElement("iframe");
+    marcoVideo.src = "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(id) +
+      "?autoplay=1&rel=0&playsinline=1";
+    marcoVideo.title = titulo;
+    marcoVideo.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+    marcoVideo.allowFullscreen = true;
+    marcoVideo.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
+    return marcoVideo;
+  };
+
+  // 8a. Vídeo dentro del marco de móvil (página Sleep Audio)
+  document.querySelectorAll("[data-video-inline]").forEach((boton) => {
+    const marco = boton.closest(".mockup-marco");
+    if (!marco) return;
+    const zona = boton.closest(".hero-figura") || marco.parentElement;
+    const cerrar = zona.querySelector("[data-video-cerrar]");
+
+    boton.addEventListener("click", () => {
+      pararMuestras();
+      marco.appendChild(crearIframeVideo(boton.dataset.videoInline, "Vídeo de Sleep Audio"));
+      marco.classList.add("con-video");
+      zona.classList.add("viendo-video");
+      if (cerrar) { cerrar.hidden = false; cerrar.focus(); }
+    });
+
+    if (cerrar) {
+      cerrar.addEventListener("click", () => {
+        const marcoVideo = marco.querySelector("iframe");
+        if (marcoVideo) marcoVideo.remove();   // quitarlo detiene el vídeo
+        marco.classList.remove("con-video");
+        zona.classList.remove("viendo-video");
+        cerrar.hidden = true;
+        boton.focus();
+      });
+    }
+  });
+
+  // 8b. Vídeo en una ventana sobre la página (botón "Ver vídeo" del inicio)
+  const lanzadoresVideo = Array.from(document.querySelectorAll("[data-video-modal]"));
+  if (lanzadoresVideo.length) {
+    const modal = document.createElement("div");
+    modal.className = "video-modal";
+    modal.setAttribute("role", "dialog");
+    modal.setAttribute("aria-modal", "true");
+    modal.setAttribute("aria-label", "Vídeo de Sleep Audio");
+    modal.innerHTML = `
+      <button type="button" class="video-cerrar" aria-label="Cerrar vídeo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="video-marco"></div>
+    `;
+    document.body.appendChild(modal);
+
+    const marcoModal = modal.querySelector(".video-marco");
+    const cerrarModal = modal.querySelector(".video-cerrar");
+    let origen = null;
+
+    const cerrarVideo = () => {
+      if (!modal.classList.contains("abierto")) return;
+      modal.classList.remove("abierto");
+      marcoModal.innerHTML = "";               // quitarlo detiene el vídeo
+      document.body.style.overflow = "";
+      if (origen) origen.focus();
+    };
+
+    lanzadoresVideo.forEach((boton) => {
+      boton.addEventListener("click", () => {
+        origen = boton;
+        pararMuestras();
+        marcoModal.innerHTML = "";
+        marcoModal.appendChild(crearIframeVideo(boton.dataset.videoModal, "Vídeo de Sleep Audio"));
+        modal.classList.add("abierto");
+        document.body.style.overflow = "hidden";
+        cerrarModal.focus();
+      });
+    });
+
+    cerrarModal.addEventListener("click", cerrarVideo);
+    modal.addEventListener("click", (ev) => { if (ev.target === modal) cerrarVideo(); });
+    document.addEventListener("keydown", (ev) => { if (ev.key === "Escape") cerrarVideo(); });
+  }
+
+  /* ---------- 9. Botón "Compartir" ---------- */
+  // En móvil abre el menú de compartir del teléfono; en ordenador copia el enlace.
+  document.querySelectorAll("[data-compartir]").forEach((boton) => {
+    const texto = boton.querySelector("[data-compartir-texto]") || boton;
+    const original = texto.textContent;
+    let reloj = null;
+
+    const enlace = () => window.location.href.split("#")[0];
+
+    const avisar = (mensaje) => {
+      texto.textContent = mensaje;
+      boton.classList.add("hecho");
+      clearTimeout(reloj);
+      reloj = setTimeout(() => {
+        texto.textContent = original;
+        boton.classList.remove("hecho");
+      }, 2500);
+    };
+
+    const copiar = async () => {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(enlace());
+          return true;
+        }
+      } catch (e) { /* se intenta el método de respaldo */ }
+      const campo = document.createElement("textarea");
+      campo.value = enlace();
+      campo.setAttribute("readonly", "");
+      campo.style.position = "fixed";
+      campo.style.opacity = "0";
+      document.body.appendChild(campo);
+      campo.select();
+      let ok = false;
+      try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+      campo.remove();
+      return ok;
+    };
+
+    boton.addEventListener("click", async () => {
+      const tactil = window.matchMedia("(pointer: coarse)").matches;
+      if (tactil && navigator.share) {
+        const descripcion = document.querySelector('meta[name="description"]');
+        try {
+          await navigator.share({
+            title: document.title,
+            text: descripcion ? descripcion.content : "",
+            url: enlace()
+          });
+          return;
+        } catch (e) {
+          if (e && e.name === "AbortError") return;   // el usuario cerró el menú
+        }
+      }
+      avisar((await copiar()) ? "Enlace copiado" : "No se pudo copiar");
+    });
+  });
+
+  /* ---------- 10. Año dinámico en el footer ---------- */
   const anio = document.querySelector("[data-anio]");
   if (anio) anio.textContent = new Date().getFullYear();
 })();
