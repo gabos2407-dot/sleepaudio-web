@@ -420,7 +420,7 @@
     marcoVideo.src = "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(id) +
       "?autoplay=1&rel=0&playsinline=1";
     marcoVideo.title = titulo;
-    marcoVideo.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+    marcoVideo.allow = "autoplay; encrypted-media; picture-in-picture";
     marcoVideo.allowFullscreen = true;
     marcoVideo.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
     return marcoVideo;
