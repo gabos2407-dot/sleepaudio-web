@@ -1131,3 +1131,89 @@ section.tras-hero { padding-top: 48px; }
   .features { grid-template-columns: 1fr; gap: 16px; }
   .feature-card { padding: 24px 22px 26px; }
 }
+
+/* ============================================
+   Guía "Sonidos para dormir"
+   ============================================ */
+.guia > * { max-width: 860px; }
+.guia > ul + p, .guia > ol + p { margin-top: 16px; }
+.guia > h2 { font-size: clamp(30px, 3.4vw, 40px); margin: 72px 0 16px; scroll-margin-top: 110px; }
+.guia h3 { font-size: 23px; margin: 32px 0 10px; }
+.guia h4 { font-family: "Figtree", sans-serif; font-size: 19px; font-weight: 600; line-height: 1.3; }
+.guia > p, .guia > ul li, .guia > ol li { color: #CFC9E3; }
+.guia > ul, .guia > ol { padding-left: 24px; margin-top: 14px; }
+.guia > ul li + li, .guia > ol li + li { margin-top: 10px; }
+.guia strong { color: var(--texto); font-weight: 600; }
+.firma { font-size: 15px; color: var(--texto-2); }
+.guia .resumen { margin-top: 20px; }
+.aviso { margin-top: 20px; padding: 14px 18px; border-radius: 14px; background: rgba(201, 184, 255, .07); border: 1px solid var(--linea); font-size: 17px; }
+
+/* Índice */
+.indice { margin-top: 36px; padding: 22px 26px; border-radius: var(--radio); background: var(--noche-2); border: 1px solid var(--linea); }
+.indice-titulo { font-size: 13px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--texto-2); }
+.indice ol { margin-top: 10px; padding-left: 22px; columns: 2; column-gap: 32px; font-size: 17px; }
+.indice li { break-inside: avoid; padding: 3px 0; color: var(--texto-2); }
+
+/* Muestras dentro de la guía */
+.guia-muestras { margin-top: 22px; }
+.etiqueta {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(201, 184, 255, .4);
+  color: var(--luna);
+  font-family: "Figtree", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  line-height: 1.5;
+  vertical-align: .15em;
+  white-space: nowrap;
+}
+.etiqueta-gratis { border-color: rgba(95, 212, 200, .5); color: var(--marea); }
+.preview-btn .etiqueta { vertical-align: 0; }
+
+/* Enlace a la guía desde el inicio */
+.enlace-guia { display: inline-block; margin-top: 14px; font-size: 16px; font-weight: 600; }
+
+/* Casos y combos en tarjetas */
+.casos, .combos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 24px; }
+.caso, .combo { padding: 22px 24px; border-radius: 18px; background: var(--noche-2); border: 1px solid var(--linea); }
+.caso h3 { font-family: "Figtree", sans-serif; font-size: 19px; font-weight: 600; line-height: 1.3; margin: 0; }
+.caso-sonidos, .combo-mezcla { margin-top: 10px; font-size: 16px; font-weight: 600; color: var(--marea); line-height: 1.7; }
+.caso p:last-child, .combo p:last-child { margin-top: 8px; font-size: 16px; color: var(--texto-2); }
+
+.recetas { list-style: none; padding-left: 0 !important; }
+.recetas li { padding-left: 22px; position: relative; }
+.recetas li::before { content: ""; position: absolute; left: 2px; top: .62em; width: 8px; height: 8px; border-radius: 50%; background: var(--marea); }
+
+/* Rutina numerada */
+.pasos { list-style: none; padding-left: 0 !important; counter-reset: paso; }
+.pasos li { counter-increment: paso; position: relative; padding-left: 50px; min-height: 34px; }
+.pasos li + li { margin-top: 16px !important; }
+.pasos li::before {
+  content: counter(paso);
+  position: absolute; left: 0; top: -2px;
+  display: grid; place-items: center;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--marea); color: var(--noche);
+  font-weight: 700; font-size: 16px;
+}
+
+/* Tabla Gratis / Premium */
+.tabla-planes-marco { margin-top: 22px; overflow-x: auto; border-radius: 18px; border: 1px solid var(--linea); }
+.tabla-planes { width: 100%; border-collapse: collapse; font-size: 16px; min-width: 520px; }
+.tabla-planes th, .tabla-planes td { padding: 13px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--linea); }
+.tabla-planes tbody tr:last-child th, .tabla-planes tbody tr:last-child td { border-bottom: 0; }
+.tabla-planes thead th { background: var(--noche-2); font-size: 14px; letter-spacing: .08em; text-transform: uppercase; color: var(--texto-2); }
+.tabla-planes thead th:last-child { color: var(--luna); }
+.tabla-planes tbody th { font-weight: 600; color: var(--texto); width: 26%; }
+.tabla-planes td { color: #CFC9E3; }
+.guia > .nota { margin-top: 14px; }
+.guia .faq { margin-top: 20px; }
+
+@media (max-width: 900px) {
+  .guia > h2 { margin-top: 56px; }
+  .casos, .combos { grid-template-columns: 1fr; }
+  .indice ol { columns: 1; }
+}
