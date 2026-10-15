@@ -1217,3 +1217,7 @@ section.tras-hero { padding-top: 48px; }
   .casos, .combos { grid-template-columns: 1fr; }
   .indice ol { columns: 1; }
 }
+
+/* Precio de Premium bajo la nota "Gratis en Android" (inicio) */
+.precio-premium { margin-top: 4px; font-size: 14px; line-height: 1.5; color: var(--texto-2); opacity: .85; }
+.hero-pie .precio-premium { flex-basis: 100%; margin-top: -6px; }
