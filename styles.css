@@ -1221,3 +1221,14 @@ section.tras-hero { padding-top: 48px; }
 /* Precio de Premium bajo la nota "Gratis en Android" (inicio) */
 .precio-premium { margin-top: 4px; font-size: 14px; line-height: 1.5; color: var(--texto-2); opacity: .85; }
 .hero-pie .precio-premium { flex-basis: 100%; margin-top: -6px; }
+
+/* Guías de salud: aviso médico y lista de fuentes */
+.guia .aviso-medico { margin-top: 20px; border-color: rgba(95, 212, 200, .35); }
+.guia > .aviso-medico:last-child { margin-top: 48px; }
+.fuentes { margin-top: 14px; padding-left: 24px; font-size: 15px; line-height: 1.55; }
+.fuentes li { color: var(--texto-2) !important; }
+.fuentes li + li { margin-top: 8px !important; }
+.fuentes em { color: var(--texto); font-style: italic; }
+.caso h3 .etiqueta { margin-left: 6px; }
+.tabla-planes.tabla-2 { min-width: 0; }
+.tabla-planes.tabla-2 tbody th { width: 46%; }
