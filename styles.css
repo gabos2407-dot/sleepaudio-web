@@ -1232,3 +1232,24 @@ section.tras-hero { padding-top: 48px; }
 .caso h3 .etiqueta { margin-left: 6px; }
 .tabla-planes.tabla-2 { min-width: 0; }
 .tabla-planes.tabla-2 tbody th { width: 46%; }
+
+/* Tu noche con Sleep Audio: pasos de la rutina */
+.noche { list-style: none; display: grid; grid-template-columns: repeat(7, 1fr); gap: 14px; margin-top: 40px; counter-reset: none; }
+.noche-paso { position: relative; display: flex; flex-direction: column; padding: 20px 16px 18px; border: 1px solid var(--linea); border-radius: 18px; background: rgba(21, 19, 46, .55); }
+.noche-ico { font-size: 28px; line-height: 1; }
+.noche-num { position: absolute; top: 14px; right: 14px; font-size: 13px; font-weight: 600; color: var(--texto-2); }
+.noche-paso h3 { font-family: "Figtree", sans-serif; font-size: 17px; font-weight: 600; line-height: 1.3; margin: 14px 0 6px; }
+.noche-paso p { font-size: 14.5px; line-height: 1.5; color: var(--texto-2); flex: 1; }
+.noche-paso .etiqueta { align-self: flex-start; margin-top: 12px; }
+
+/* ¿No puedes dormir? */
+.noches { align-items: start; }
+.nopuedes { list-style: none; display: grid; gap: 12px; }
+.nopuedes li { display: flex; gap: 16px; align-items: flex-start; padding: 16px 18px; border: 1px solid var(--linea); border-radius: 16px; background: rgba(30, 27, 63, .45); }
+.nopuedes li > span { font-size: 24px; line-height: 1.2; }
+.nopuedes strong { font-size: 17px; }
+.nopuedes p { margin-top: 2px; font-size: 15.5px; line-height: 1.5; color: var(--texto-2); }
+
+@media (max-width: 1200px) { .noche { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 900px)  { .noche { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 900px)  { .noche-paso { padding: 16px 14px; } .noche-paso h3 { font-size: 16px; } .noche-paso p { font-size: 14px; } }

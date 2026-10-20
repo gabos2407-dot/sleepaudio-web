@@ -2,19 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://dreamcodestudio.app/</loc>
-    <lastmod>2026-10-14</lastmod>
+    <lastmod>2026-10-20</lastmod>
   </url>
   <url>
     <loc>https://dreamcodestudio.app/sleepaudio</loc>
-    <lastmod>2026-10-09</lastmod>
+    <lastmod>2026-10-20</lastmod>
   </url>
   <url>
     <loc>https://dreamcodestudio.app/sonidos-para-dormir</loc>
-    <lastmod>2026-10-14</lastmod>
+    <lastmod>2026-10-20</lastmod>
+  </url>
+  <url>
+    <loc>https://dreamcodestudio.app/rutina-del-sueno</loc>
+    <lastmod>2026-10-20</lastmod>
+  </url>
+  <url>
+    <loc>https://dreamcodestudio.app/ejercicios-de-respiracion</loc>
+    <lastmod>2026-10-20</lastmod>
   </url>
   <url>
     <loc>https://dreamcodestudio.app/apps</loc>
-    <lastmod>2026-10-09</lastmod>
+    <lastmod>2026-10-20</lastmod>
   </url>
   <url>
     <loc>https://dreamcodestudio.app/sobre-nosotros</loc>
@@ -26,7 +34,7 @@
   </url>
   <url>
     <loc>https://dreamcodestudio.app/privacidad</loc>
-    <lastmod>2026-10-09</lastmod>
+    <lastmod>2026-10-20</lastmod>
   </url>
   <url>
     <loc>https://dreamcodestudio.app/terminos</loc>
@@ -34,6 +42,6 @@
   </url>
   <url>
     <loc>https://dreamcodestudio.app/permisos</loc>
-    <lastmod>2026-10-09</lastmod>
+    <lastmod>2026-10-20</lastmod>
   </url>
 </urlset>
