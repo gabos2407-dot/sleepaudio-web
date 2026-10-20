@@ -1274,3 +1274,29 @@ section.tras-hero { padding-top: 48px; }
   .noche-ico { grid-row: auto; }
   .noche-paso .etiqueta { grid-row: auto; }
 }
+
+/* ============================================
+   Texto justificado en toda la web
+   Párrafos y listas justificados con corte de palabras en español,
+   para que no queden huecos grandes en el móvil. Los textos centrados
+   (cierres, pies de captura) y los menús conservan su alineación.
+   ============================================ */
+p, li {
+  text-align: justify;
+  text-justify: inter-word;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+section.cierre p,
+.movil p,
+.nav li, .nav-links li,
+.footer p, .footer li,
+.audio-preview-label,
+.indice li,
+.nota, .precio-premium {
+  text-align: left;
+  -webkit-hyphens: manual;
+  hyphens: manual;
+}
+section.cierre p { text-align: center; }
+.movil p { text-align: center; }
