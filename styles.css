@@ -1251,5 +1251,26 @@ section.tras-hero { padding-top: 48px; }
 .nopuedes p { margin-top: 2px; font-size: 15.5px; line-height: 1.5; color: var(--texto-2); }
 
 @media (max-width: 1200px) { .noche { grid-template-columns: repeat(4, 1fr); } }
-@media (max-width: 900px)  { .noche { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 900px)  { .noche-paso { padding: 16px 14px; } .noche-paso h3 { font-size: 16px; } .noche-paso p { font-size: 14px; } }
+/* Móvil: los pasos pasan a ser una lista compacta (icono · texto · etiqueta) */
+@media (max-width: 900px) {
+  .noche { grid-template-columns: 1fr; gap: 0; margin-top: 26px; border: 1px solid var(--linea); border-radius: 18px; overflow: hidden; }
+  .noche-paso { display: grid; grid-template-columns: 34px 1fr auto; column-gap: 12px; align-items: center; padding: 12px 14px; border: 0; border-radius: 0; background: rgba(21, 19, 46, .55); }
+  .noche-paso + .noche-paso { border-top: 1px solid var(--linea); }
+  .noche-ico { grid-row: 1 / span 2; font-size: 22px; text-align: center; }
+  .noche-num { display: none; }
+  .noche-paso h3 { grid-column: 2; margin: 0; font-size: 16px; }
+  .noche-paso p { grid-column: 2; font-size: 13.5px; line-height: 1.4; margin-top: 1px; }
+  .noche-paso .etiqueta { grid-column: 3; grid-row: 1 / span 2; align-self: center; margin-top: 0; }
+  .nopuedes { gap: 8px; }
+  .nopuedes li { padding: 12px 14px; gap: 12px; }
+  .nopuedes li > span { font-size: 20px; }
+  .nopuedes strong { font-size: 16px; }
+  .nopuedes p { display: none; }
+  .nopuedes { grid-template-columns: 1fr 1fr; }
+  .nopuedes li { align-items: center; padding: 10px 12px; }
+  .nopuedes strong { font-size: 14.5px; line-height: 1.3; }
+  .noche-paso p { display: none; }
+  .noche-paso { padding: 11px 14px; }
+  .noche-ico { grid-row: auto; }
+  .noche-paso .etiqueta { grid-row: auto; }
+}
