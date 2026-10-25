@@ -573,4 +573,29 @@
   /* ---------- 12. Año dinámico en el footer ---------- */
   const anio = document.querySelector("[data-anio]");
   if (anio) anio.textContent = new Date().getFullYear();
+
+  /* ---------- 13. Visitas que llegan desde la app (?desde=app) ---------- */
+  // Quien ya tiene Sleep Audio no necesita el botón de descarga:
+  // se ocultan los bloques [data-solo-web] y se muestran los [data-solo-app].
+  if (new URLSearchParams(window.location.search).get("desde") === "app") {
+    document.documentElement.classList.add("desde-app");
+    document.querySelectorAll("[data-solo-web]").forEach((el) => { el.hidden = true; el.style.display = "none"; });
+    document.querySelectorAll("[data-solo-app]").forEach((el) => { el.hidden = false; });
+  }
+  /* ---------- 14. Lucero: si la tocas, da un saltito y celebra ---------- */
+  document.querySelectorAll("[data-lucero]").forEach((el) => {
+    const img = el.querySelector("img");
+    if (!img) return;
+    const original = img.getAttribute("src");
+    const celebra = original.replace(/lucero[^/]*\.webp$/, "lucero-celebra.webp");
+    let espera = null;
+    el.addEventListener("click", () => {
+      el.classList.remove("salta");
+      void el.offsetWidth;                // reinicia la animación si se toca seguido
+      el.classList.add("salta");
+      img.src = celebra;
+      clearTimeout(espera);
+      espera = setTimeout(() => { img.src = original; el.classList.remove("salta"); }, 1400);
+    });
+  });
 })();
