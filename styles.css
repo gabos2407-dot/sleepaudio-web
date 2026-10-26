@@ -1469,3 +1469,20 @@ section.cierre p { text-align: center; }
 .tira-guia .movil { flex-basis: 180px; }
 .tira-guia .movil p { font-size: 15px; text-align: center; }
 @media (max-width: 900px) { .tira-guia { gap: 16px; } .tira-guia .movil { flex-basis: 150px; } }
+
+/* Mis combos (inicio) */
+.mis-combos .wrap.dos { grid-template-columns: 1fr 1.1fr; gap: 48px; }
+.mis-combos-etiquetas { margin-bottom: 14px; display: flex; gap: 8px; }
+.mis-combos .sub { margin-top: 16px; }
+.mis-combos-pasos { margin-top: 26px; }
+.mis-combos-pasos li { color: #CFC9E3; font-size: 18px; }
+.mis-combos-pasos strong { color: var(--texto); }
+.mis-combos-ideas { margin-top: 22px; display: grid; gap: 8px; font-size: 16px; }
+.mis-combos-ideas li { color: var(--texto-2); text-align: left; }
+.mis-combos-ideas strong { color: var(--marea); font-weight: 600; }
+.mis-combos .acciones { margin-top: 26px; }
+.mis-combos-figura img { width: 100%; height: auto; display: block; }
+@media (max-width: 900px) {
+  .mis-combos .wrap.dos { grid-template-columns: 1fr; gap: 24px; }
+  .mis-combos-figura { margin: 0 -12px; }
+}
