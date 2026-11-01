@@ -15,6 +15,11 @@
   var BAJADA = 30;                       // segundos de bajada final del temporizador
   var tituloOriginal = document.title;
   var tactil = window.matchMedia && window.matchMedia("(hover: none)").matches;   /* móvil o tableta: sin teclado */
+  /* Android: con la pantalla apagada el sonido se corta y se invita a la app */
+  var android = /Android/i.test(navigator.userAgent || "");
+  var pagina = (location.pathname.split("/").pop() || "").replace(/\.html$/, "") || id;   /* p. ej. ruido-blanco */
+  var CORTE = 25, CORTE_BAJADA = 3;      // segundos hasta el corte y de bajada
+  var PLAY_URL = "https://play.google.com/store/apps/details?id=com.dreamcodestudio.sleepaudio&referrer=utm_source%3Ddreamcodestudio.app%26utm_medium%3Dweb%26utm_campaign%3Dpantalla_apagada%26utm_content%3D";
 
   /* ---------- Guardado en el navegador (si se puede) ---------- */
   function leer(k, def) {
@@ -31,7 +36,7 @@
     carrier: num(guardado.carrier, +(rep.dataset.carrier || 200)),
     beat: num(guardado.beat, +(rep.dataset.beat || 6))
   };
-  var minutos = num(leer("sa-ruidos-temporizador", 0), 0);
+  var minutos = android ? 0 : num(leer("sa-ruidos-temporizador", 0), 0);
   var entrada = num(leer("sa-ruidos-entrada", 0), 0);
   function num(v, def) { return typeof v === "number" && isFinite(v) ? v : def; }
   function guardarRuido() { guardar("sa-ruido-" + id, { vol: st.vol, lvl: st.lvl, type: st.type, carrier: st.carrier, beat: st.beat }); }
@@ -107,6 +112,7 @@
   /* Barra espaciadora: pausa y reanuda (también tras tocar un ajuste del reproductor) */
   document.addEventListener("keydown", function (e) {
     if (e.code !== "Space" && e.key !== " ") return;
+    if (document.documentElement.classList.contains("r-dialogo-abierto")) return;
     var t = e.target, tag = t && t.tagName;
     if (tag === "BUTTON" && (t === btn || !rep.contains(t))) return;   /* el botón de play ya responde solo */
     if (tag === "A" || tag === "TEXTAREA" || tag === "SELECT" || tag === "SUMMARY") return;
@@ -151,6 +157,91 @@
 
   /* Si el navegador congela el audio (móvil con pantalla bloqueada), al volver se ve el estado real */
   document.addEventListener("visibilitychange", function () { if (!document.hidden) tic(); });
+
+  /* ---------- Solo Android: pantalla apagada ---------- */
+  if (android) {
+    document.documentElement.classList.add("es-android");
+
+    /* Sin temporizador en Android: con la pantalla encendida no tiene sentido */
+    var filaTimer = $(".r-timer") && $(".r-timer").closest(".r-fila");
+    if (filaTimer) filaTimer.hidden = true;
+    var notaTimer = rep.querySelector(".r-nota:not(.r-solo-movil)");
+    if (notaTimer) notaTimer.textContent = "Tus ajustes se guardan en este navegador.";
+
+    /* Aviso previo bajo el reproductor */
+    var aviso = document.createElement("p");
+    aviso.className = "r-aviso-android";
+    aviso.innerHTML = 'En el móvil, la web suena con la pantalla encendida. Para dormir con ella apagada, ' +
+      '<a href="' + PLAY_URL + 'aviso-' + pagina + '" target="_blank" rel="noopener">usa la app</a>.';
+    estado.insertAdjacentElement("afterend", aviso);
+
+    var limite = 0, corteReloj = null, cortado = false, dialogo = null;
+
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) {
+        if (!sonando) return;
+        limite = Date.now() + (CORTE + CORTE_BAJADA) * 1000;
+        M.programarCorte(CORTE, CORTE_BAJADA);
+        clearTimeout(corteReloj);
+        corteReloj = setTimeout(cortar, (CORTE + CORTE_BAJADA) * 1000 + 300);
+      } else {
+        if (limite) {
+          clearTimeout(corteReloj);
+          if (Date.now() >= limite) cortar();         /* el temporizador del navegador llegó tarde */
+          else { limite = 0; M.anularCorte(); }
+        }
+        if (cortado) mostrarDialogo();
+      }
+    });
+
+    function cortar() {
+      limite = 0;
+      if (!sonando) return;
+      M.pararTodo();
+      sonando = false; fin = 0;
+      clearInterval(reloj); reloj = null;
+      pintar("Se paró al apagar la pantalla.");
+      cortado = true;
+      if (!document.hidden) mostrarDialogo();
+    }
+
+    function mostrarDialogo() {
+      cortado = false;
+      if (!dialogo) dialogo = crearDialogo();
+      dialogo.hidden = false;
+      document.documentElement.classList.add("r-dialogo-abierto");
+      dialogo.querySelector(".r-dialogo-seguir").focus();
+    }
+    function cerrarDialogo() {
+      if (!dialogo || dialogo.hidden) return;
+      dialogo.hidden = true;
+      document.documentElement.classList.remove("r-dialogo-abierto");
+      btn.focus();
+    }
+    function crearDialogo() {
+      var d = document.createElement("div");
+      d.className = "r-dialogo";
+      d.hidden = true;
+      d.innerHTML =
+        '<div class="r-dialogo-caja" role="dialog" aria-modal="true" aria-labelledby="r-dialogo-titulo">' +
+          '<img class="r-dialogo-lucero" src="../assets/lucero-dormida.webp" alt="" width="120" height="120">' +
+          '<h2 id="r-dialogo-titulo">¿Quieres dormir con la pantalla apagada?</h2>' +
+          '<p>En la app Sleep Audio el sonido sigue toda la noche y se apaga solo con el temporizador.</p>' +
+          '<div class="r-dialogo-botones">' +
+            '<a class="btn btn-1 btn-play" href="' + PLAY_URL + pagina + '" target="_blank" rel="noopener">' +
+              '<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-google-play"/></svg>' +
+              '<span class="btn-play-texto"><small>Gratis en</small><strong>Google Play</strong></span>' +
+            '</a>' +
+            '<button type="button" class="btn btn-2 r-dialogo-seguir">Seguir en la web</button>' +
+          '</div>' +
+        '</div>';
+      d.querySelector(".r-dialogo-seguir").addEventListener("click", cerrarDialogo);
+      d.addEventListener("click", function (e) { if (e.target === d) cerrarDialogo(); });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape") cerrarDialogo(); });
+      document.body.appendChild(d);
+      return d;
+    }
+  }
 
   pintar();
 })();

@@ -430,6 +430,31 @@
       master.gain.cancelScheduledValues(t);
       master.gain.setValueAtTime(master.gain.value, t);
       master.gain.linearRampToValueAtTime(1, t + 0.4);
+    },
+    /* Corte con la pantalla apagada (solo Android): el volumen baja a cero
+       entre los segundos "espera" y "espera + bajada", con el reloj de audio,
+       que sigue siendo exacto aunque el navegador frene los temporizadores. */
+    programarCorte: function (espera, bajada) {
+      if (!ctx || !voz) return;
+      var t = ctx.currentTime;
+      master.gain.cancelScheduledValues(t);
+      master.gain.setValueAtTime(master.gain.value, t);
+      master.gain.setValueAtTime(master.gain.value, t + espera);
+      master.gain.linearRampToValueAtTime(0, t + espera + bajada);
+    },
+    /* Se vuelve a la web antes del corte: el volumen recupera su nivel */
+    anularCorte: function () {
+      if (!ctx) return;
+      var t = ctx.currentTime;
+      master.gain.cancelScheduledValues(t);
+      master.gain.setValueAtTime(master.gain.value, t);
+      master.gain.linearRampToValueAtTime(1, t + 0.3);
+    },
+    /* Para del todo (fuentes, truenos y golpes del tren) y duerme el audio */
+    pararTodo: function () {
+      if (!ctx) return;
+      parar(false);
+      setTimeout(function () { try { if (!voz) ctx.suspend(); } catch (e) {} }, 400);
     }
   };
 })();
