@@ -64,31 +64,6 @@
 
       <div class="permiso">
         <div>
-          <h3>Micrófono</h3>
-          <code>RECORD_AUDIO</code>
-        </div>
-        <div>
-          <p>Mide el nivel de ruido del entorno durante la Detección de reposo, para detectar silencio. La función solo te avisa cuando parece que te has dormido; no cambia la reproducción. Es opcional.</p>
-          <ul>
-            <li>No grabamos audio.</li>
-            <li>No almacenamos audio.</li>
-            <li>No enviamos audio fuera del dispositivo.</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="permiso">
-        <div>
-          <h3>Sensores de movimiento</h3>
-          <code>Sensores del dispositivo</code>
-        </div>
-        <div>
-          <p>Junto al nivel de ruido, ayudan a detectar cuándo te has dormido. Los datos se usan en el momento y no se guardan.</p>
-        </div>
-      </div>
-
-      <div class="permiso">
-        <div>
           <h3>Health Connect</h3>
           <code>READ_HEART_RATE · READ_HEART_RATE_VARIABILITY · READ_SLEEP</code>
         </div>
@@ -121,7 +96,7 @@
           <code>FOREGROUND_SERVICE · FOREGROUND_SERVICE_MEDIA_PLAYBACK</code>
         </div>
         <div>
-          <p>Permiten que el audio, la mezcla, el temporizador y la Detección de reposo sigan funcionando aunque cierres la app o apagues la pantalla.</p>
+          <p>Permiten que el audio, la mezcla, el temporizador y la Detección de reposo sigan funcionando aunque cierres la app o apagues la pantalla. La Detección de reposo no necesita ningún permiso propio: solo cuenta el tiempo desde la última vez que usaste el móvil.</p>
         </div>
       </div>
 
@@ -161,7 +136,17 @@
           <code>INTERNET</code>
         </div>
         <div>
-          <p>Se usa para las funciones que requieren conexión: la gestión de la suscripción a través de Google Play, la reproducción en streaming de pistas alojadas en la nube y la validación de códigos promocionales.</p>
+          <p>Se usa para las funciones que requieren conexión: la gestión de la suscripción a través de Google Play, la reproducción en streaming de la Colección de música y de las guiadas con nube ☁ (se descargan de <code>audio.dreamcodestudio.app</code>) y la validación de códigos promocionales.</p>
+        </div>
+      </div>
+
+      <div class="permiso">
+        <div>
+          <h3>Estado de la conexión</h3>
+          <code>ACCESS_NETWORK_STATE</code>
+        </div>
+        <div>
+          <p>Permite saber si hay conexión antes de reproducir la Colección o una guiada con nube, para avisarte si no tienes internet. No lee tu actividad en la red ni las webs que visitas.</p>
         </div>
       </div>
 

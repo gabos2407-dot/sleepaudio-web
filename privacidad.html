@@ -61,7 +61,7 @@
   <!-- CONTENIDO LEGAL -->
   <section>
     <div class="wrap legal">
-      <p class="fecha">Última actualización: 25 de octubre de 2026</p>
+      <p class="fecha">Última actualización: 4 de noviembre de 2026</p>
 
       <p>Esta política explica qué datos usa Sleep Audio, desarrollada por DreamCode Studio, y esta página web, para qué los usamos y qué derechos tienes.</p>
 
@@ -74,11 +74,8 @@
 
       <h2>2. Datos que usa la app</h2>
 
-      <h3>Nivel de ruido del micrófono</h3>
-      <p>Durante la Detección de reposo, la app mide en tiempo real el volumen del entorno para detectar silencio. El audio no se graba, no se almacena y no sale del dispositivo.</p>
-
-      <h3>Sensores de movimiento</h3>
-      <p>Se usan en el móvil, junto al nivel de ruido, para estimar cuándo te has dormido y avisarte. No se guardan ni se envían.</p>
+      <h3>Detección de reposo</h3>
+      <p>Es opcional. La app solo cuenta, dentro del móvil, el tiempo desde la última vez que lo usaste (tocar la app, encender o desbloquear la pantalla o pulsar un botón de la notificación o de los auriculares). No usa el micrófono ni los sensores de movimiento, y ese tiempo no se guarda ni se envía.</p>
 
       <h3>Datos de Health Connect</h3>
       <p>Solo si lo activas y das permiso explícito, la app lee frecuencia cardíaca, variabilidad de la frecuencia cardíaca y datos de sueño para mostrarte el Informe de Sueño. Se procesan en el móvil y no se envían a ningún servidor.</p>
@@ -90,7 +87,7 @@
       <p>Sleep Audio permite canjear códigos de acceso promocionales, que se entregan de forma individual y discrecional. Si canjeas uno, la app envía el código y un identificador anónimo de tu dispositivo a nuestro servidor (Cloudflare Workers) para validarlo y comprobar su vigencia. Guardamos el código, ese identificador y las fechas de canje y vencimiento. No se asocia a tu nombre ni a datos personales. Estos datos se conservan mientras el código esté vigente y hasta 12 meses después de su vencimiento. Si no usas un código, la app no envía nada de esto. Puedes solicitar la eliminación de estos datos escribiendo a <a href="mailto:dreamcode.creative@gmail.com">dreamcode.creative@gmail.com</a>; en ese caso, el código se revocará y dejará de dar acceso Premium.</p>
 
       <h3>Reproducción en streaming</h3>
-      <p>Las pistas en streaming se sirven desde la infraestructura de Cloudflare R2. Al reproducirlas, el servidor registra técnicamente tu dirección IP y la pista solicitada, solo para el funcionamiento del servicio. No asociamos esa información a ningún dato personal ni guardamos historial de reproducción.</p>
+      <p>La Colección de música y las guiadas con nube ☁ se descargan de <code>audio.dreamcodestudio.app</code>, nuestro servidor de audio en la infraestructura de Cloudflare R2. Al reproducirlas, el servidor registra técnicamente tu dirección IP y la pista solicitada, solo para el funcionamiento del servicio. No asociamos esa información a ningún dato personal ni guardamos historial de reproducción.</p>
 
       <h3>Datos guardados en tu móvil</h3>
       <p>Tus ajustes, mezclas, tus combos propios («Mis combos»), temporizadores, la configuración de tu Rutina del sueño (horarios, avisos y listas), tus pendientes para mañana, tu registro de la mañana («¿Cómo dormiste?»), tu racha y tu resumen semanal, tus medidas y tu avance en «Aprende a respirar», así como las rutas de los audios que importes, se guardan únicamente en tu dispositivo y no se envían a ningún servidor. Los audios que importas se leen desde tu móvil y no se suben a ningún servidor.</p>
@@ -101,11 +98,11 @@
 
       <h2>4. Permisos que solicita la app</h2>
       <ul>
-        <li><strong>Micrófono:</strong> solo para medir el nivel de ruido en la Detección de reposo. Es opcional.</li>
-        <li><strong>Health Connect:</strong> solo si activas el Informe de Sueño. Es opcional.</li>
+                <li><strong>Health Connect:</strong> solo si activas el Informe de Sueño. Es opcional.</li>
         <li><strong>Notificaciones:</strong> para mostrar los controles de reproducción, el despertador y los avisos de la Rutina del sueño.</li>
         <li><strong>Vibración y alarmas:</strong> para el despertador, los avisos de la rutina y el ritmo de los ejercicios de respiración.</li>
-        <li><strong>Internet:</strong> para la Colección en streaming y para validar códigos promocionales.</li>
+        <li><strong>Internet:</strong> para la Colección y las guiadas con nube en streaming, para la suscripción y para validar códigos promocionales.</li>
+        <li><strong>Estado de la conexión (<code>ACCESS_NETWORK_STATE</code>):</strong> para saber si hay internet antes de reproducir una pista en streaming. No lee tu actividad en la red.</li>
       </ul>
 
       <h2>5. Datos que no recopilamos</h2>
@@ -117,7 +114,7 @@
       </ul>
 
       <h2>6. Base legal</h2>
-      <p>Usamos los datos de micrófono, sensores y Health Connect con tu consentimiento, que das al activar cada función y conceder el permiso. Puedes retirarlo en cualquier momento desde los ajustes de Android o de Health Connect.</p>
+      <p>Usamos los datos de Health Connect con tu consentimiento, que das al activar la función y conceder el permiso. Puedes retirarlo en cualquier momento desde los ajustes de Android o de Health Connect.</p>
       <p>El registro técnico de la reproducción en streaming y la validación de los códigos promocionales se basan en nuestro interés legítimo: poder prestar el servicio y evitar el uso no autorizado de los códigos. Las estadísticas de visitas de esta web también se basan en nuestro interés legítimo en conocer, de forma anónima y agregada, cómo se usa.</p>
 
       <h2>7. Uso de datos de Health Connect</h2>
