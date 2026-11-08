@@ -598,4 +598,171 @@
       espera = setTimeout(() => { img.src = original; el.classList.remove("salta"); }, 1400);
     });
   });
+  /* ---------- 15. Reproductor del inicio: escena "Noche en la cabaña" ---------- */
+  // Igual que en la app: en pausa la escena queda quieta; al sonar una muestra cobra vida
+  // (humo, lluvia, luciérnagas y estrellas). Se dibuja en un espacio fijo de 568×464
+  // y se escala para llenar el recuadro sin deformarse.
+  const lienzo = document.querySelector("[data-escena-cabana]");
+  const tarjetaEscena = document.querySelector("[data-reproductor]");
+  if (lienzo && lienzo.getContext) {
+    const x = lienzo.getContext("2d");
+    const W = 568, H = 464, TAU = Math.PI * 2;
+    const reducir = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const azar = Math.random;
+
+    const estrellas = [], lluvia = [], luciernagas = [];
+    let humo = [];
+    for (let i = 0; i < 110; i++) estrellas.push({ x: azar() * W, y: azar() * H * 0.6, r: azar() * 1.8 + 0.4, p: azar() * TAU });
+    for (let i = 0; i < 120; i++) lluvia.push({ x: azar() * W, y: azar() * H, s: 6 + azar() * 6 });
+    for (let i = 0; i < 14; i++) luciernagas.push({ x: azar() * W, y: H * 0.62 + azar() * H * 0.3, p: azar() * TAU });
+
+    const cx = 290, cy = 386;   // posición de la cabaña
+
+    function poligono(puntos, color) {
+      x.fillStyle = color; x.beginPath(); x.moveTo(puntos[0][0], puntos[0][1]);
+      for (let k = 1; k < puntos.length; k++) x.lineTo(puntos[k][0], puntos[k][1]);
+      x.closePath(); x.fill();
+    }
+    function pino(px, py, s, color) {
+      x.fillStyle = color;
+      for (let k = 0; k < 4; k++) {
+        x.beginPath();
+        x.moveTo(px, py - s * (1.2 + k * 0.55));
+        x.lineTo(px - s * (0.55 + k * 0.12), py - s * k * 0.55);
+        x.lineTo(px + s * (0.55 + k * 0.12), py - s * k * 0.55);
+        x.closePath(); x.fill();
+      }
+      x.fillRect(px - s * 0.06, py, s * 0.12, s * 0.25);
+    }
+    function niebla(y, t, alfa) {
+      const g = x.createLinearGradient(0, y, 0, y + 80);
+      g.addColorStop(0, "rgba(180,190,255,0)");
+      g.addColorStop(0.5, "rgba(180,190,255," + alfa + ")");
+      g.addColorStop(1, "rgba(180,190,255,0)");
+      x.fillStyle = g; x.fillRect((t / 60) % 80 - 80, y, W + 160, 80);
+    }
+    function brillo(gx, gy, radio, alfa) {
+      const g = x.createRadialGradient(gx, gy, 2, gx, gy, radio);
+      g.addColorStop(0, "rgba(255,170,70," + alfa + ")");
+      g.addColorStop(1, "rgba(255,170,70,0)");
+      x.fillStyle = g; x.fillRect(gx - radio, gy - radio, radio * 2, radio * 2);
+    }
+    // El humo nace sobre la chimenea, sube, se ensancha y se desvanece
+    function moverHumo() {
+      if (azar() < 0.12) humo.push({ x: cx + 46, y: cy - 126, a: 0.35, r: 5 });
+      humo.forEach((s) => { s.y -= 0.5; s.x += 0.25; s.r += 0.06; s.a -= 0.002; });
+      humo = humo.filter((s) => s.a > 0);
+    }
+    for (let i = 0; i < 260; i++) moverHumo();   // para que en pausa ya se vea la columna de humo
+
+    function dibujar(t, vivo) {
+      const parpadeo = vivo ? 0.82 + 0.18 * Math.sin(t / 130) * Math.sin(t / 77) : 0.9;
+
+      const cielo = x.createLinearGradient(0, 0, 0, H);
+      cielo.addColorStop(0, "#101329"); cielo.addColorStop(0.5, "#292454"); cielo.addColorStop(1, "#5a3b6e");
+      x.fillStyle = cielo; x.fillRect(0, 0, W, H);
+
+      estrellas.forEach((s) => {
+        x.globalAlpha = 0.25 + 0.24 * Math.sin(t / 900 + s.p);
+        x.fillStyle = "#fff"; x.beginPath(); x.arc(s.x, s.y, s.r, 0, TAU); x.fill();
+      });
+      x.globalAlpha = 1;
+
+      // Luna creciente
+      x.fillStyle = "#f3f1ff"; x.beginPath(); x.arc(450, 92, 24, 0, TAU); x.fill();
+      x.fillStyle = "#1d1b4d"; x.beginPath(); x.arc(460, 86, 22, 0, TAU); x.fill();
+
+      // Montañas, niebla y colina
+      poligono([[0,300],[90,210],[160,270],[250,170],[340,260],[430,200],[568,290],[568,464],[0,464]], "#232063");
+      poligono([[0,340],[120,262],[210,318],[320,240],[430,320],[568,270],[568,464],[0,464]], "#1a1a52");
+      niebla(300, t, 0.16);
+      poligono([[0,380],[140,350],[300,372],[460,346],[568,368],[568,464],[0,464]], "#111437");
+
+      // Pinos
+      pino(40, 392, 46, "#0b0d26"); pino(96, 404, 34, "#0c0e29");
+      pino(520, 396, 50, "#0b0d26"); pino(470, 410, 34, "#0c0e29");
+
+      // Cabaña: muros, tejado y chimenea
+      x.fillStyle = "#0f1030"; x.fillRect(cx - 70, cy - 64, 140, 64);
+      poligono([[cx - 90, cy - 62], [cx, cy - 128], [cx + 90, cy - 62]], "#07081c");
+      x.fillStyle = "#0a0b22"; x.fillRect(cx + 38, cy - 124, 16, 34);
+
+      // Ventanas y puerta encendidas (parpadean con el fuego)
+      const alfaVentana = 0.55 + 0.45 * parpadeo;
+      [[cx - 50, cy - 44, 26, 24], [cx + 22, cy - 44, 26, 24]].forEach((v) => {
+        x.fillStyle = "rgba(255,176,80," + alfaVentana + ")"; x.fillRect(v[0], v[1], v[2], v[3]);
+        brillo(v[0] + 13, v[1] + 12, 60, 0.35 * parpadeo);
+      });
+      x.fillStyle = "rgba(255,196,110,.9)";
+      x.fillRect(cx - 10, cy - 34, 20, 34);
+
+      // Humo
+      if (vivo) moverHumo();
+      humo.forEach((s) => {
+        x.fillStyle = "rgba(210,215,255," + Math.max(0, s.a) + ")";
+        x.beginPath(); x.arc(s.x, s.y, s.r, 0, TAU); x.fill();
+      });
+
+      // Luciérnagas
+      luciernagas.forEach((p) => {
+        const a = 0.4 + 0.6 * Math.sin(t / 500 + p.p);
+        x.fillStyle = "rgba(255,236,150," + Math.max(0, a) + ")";
+        x.beginPath();
+        x.arc(p.x + Math.sin(t / 1500 + p.p) * 14, p.y + Math.cos(t / 1900 + p.p) * 8, 2.4, 0, TAU);
+        x.fill();
+      });
+
+      // Lluvia (en pausa, las gotas se quedan quietas)
+      x.strokeStyle = "rgba(170,190,255,.45)"; x.lineWidth = 1.4; x.beginPath();
+      lluvia.forEach((r) => {
+        if (vivo) {
+          r.y += r.s; r.x -= 1.2;
+          if (r.y > H) { r.y = -10; r.x = azar() * W + 40; }
+        }
+        x.moveTo(r.x, r.y); x.lineTo(r.x - 3, r.y + 14);
+      });
+      x.stroke();
+    }
+
+    // Ajusta el lienzo al recuadro (nítido en pantallas de alta densidad) y centra la escena
+    let ultimoT = 0;
+    function ajustar() {
+      const caja = lienzo.getBoundingClientRect();
+      if (!caja.width || !caja.height) return;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      lienzo.width = Math.round(caja.width * dpr);
+      lienzo.height = Math.round(caja.height * dpr);
+      const escala = Math.max(lienzo.width / W, lienzo.height / H);
+      x.setTransform(escala, 0, 0, escala, (lienzo.width - W * escala) / 2, (lienzo.height - H * escala) / 2);
+      dibujar(ultimoT, false);
+    }
+
+    let enPantalla = true, cuadro = null;
+    const sonando = () => !!(tarjetaEscena && tarjetaEscena.classList.contains("sonando"));
+    function bucle(t) {
+      ultimoT = t;
+      dibujar(t, true);
+      cuadro = requestAnimationFrame(bucle);
+    }
+    function actualizar() {
+      const animar = sonando() && enPantalla && !reducir && !document.hidden;
+      if (animar && cuadro === null) cuadro = requestAnimationFrame(bucle);
+      if (!animar && cuadro !== null) { cancelAnimationFrame(cuadro); cuadro = null; dibujar(ultimoT, false); }
+    }
+
+    ajustar();
+    window.addEventListener("resize", ajustar);
+    if (tarjetaEscena) {
+      new MutationObserver(actualizar).observe(tarjetaEscena, { attributes: true, attributeFilter: ["class"] });
+    }
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver((entradas) => {
+        enPantalla = entradas[0].isIntersecting;
+        if (enPantalla) ajustar();
+        actualizar();
+      }).observe(lienzo);
+    }
+    document.addEventListener("visibilitychange", actualizar);
+  }
+
 })();

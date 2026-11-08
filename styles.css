@@ -1502,3 +1502,7 @@ section.cierre p { text-align: center; }
 .r-dialogo-botones .btn { width: 100%; max-width: 280px; justify-content: center; }
 @keyframes r-dialogo-entra { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .r-dialogo, .r-dialogo-lucero { animation: none; } }
+
+/* Reproductor del inicio: escena "Noche en la cabaña" */
+.reproductor-portada:has(.escena-cabana) { background: #101329; position: relative; }
+.escena-cabana { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
